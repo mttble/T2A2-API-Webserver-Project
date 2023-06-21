@@ -1,6 +1,6 @@
 from flask import Blueprint
 from init import db, bcrypt
-from datetime import datetime
+from datetime import date
 from models.user import User
 from models.course import Course
 
@@ -34,18 +34,15 @@ def seed_db():
         Course(
             title="LV Rescue and Resuscitation",
             status="In Date",
-            date_of_completion=datetime.date(2023, 6, 21),
-            date_of_expiry=datetime.date(2024, 6, 21)
-            
+            date_of_completion=date(2023, 6, 21),
+            date_of_expiry=date(2024, 6, 21)
         ),
         Course(
             title="High Voltage Terminations",
             status="In Date",
-            date_of_completion=datetime.date(2023, 5, 22),
-            date_of_expiry=datetime.date(2024, 5, 22)
-            
-        ),
-        
+            date_of_completion=date(2023, 5, 22),
+            date_of_expiry=date(2024, 5, 22)
+        )
     ]
 
     db.session.query(Course).delete()
