@@ -1,4 +1,4 @@
-from init import db
+from init import db, ma
 from datetime import date
 
 class Licence(db.Model):
@@ -11,3 +11,8 @@ class Licence(db.Model):
     status = db.Column(db.String(30))
     date_of_completion = db.Column(db.Date)
     date_of_expiry = db.Column(db.Date)
+
+class LicenceSchema(ma.Schema):
+
+    class Meta:
+        fields = ('title', 'number', 'description', 'status', 'date_of_completion', 'date_of_expiry')

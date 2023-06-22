@@ -1,4 +1,4 @@
-from init import db
+from init import db, ma
 from datetime import date
 
 class Course(db.Model):
@@ -10,3 +10,7 @@ class Course(db.Model):
     date_of_completion = db.Column(db.Date)
     date_of_expiry = db.Column(db.Date)
 
+class CourseSchema(ma.Schema):
+
+    class Meta:
+        fields = ('title', 'status', 'date_of_completion', 'date_of_expiry')
