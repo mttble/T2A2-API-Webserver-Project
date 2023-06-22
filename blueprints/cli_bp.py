@@ -40,6 +40,12 @@ def seed_db():
         ),
         Course(
             title="High Voltage Terminations"
+        ),
+        Course(
+            title="High Voltage Switching"
+        ),
+        Course(
+            title="Thermography and Ultrasonic"
         )
     ]
 
@@ -124,49 +130,6 @@ def seed_db():
 
     db.session.query(Licence).delete()
     db.session.add_all(licences)
-    db.session.commit()
-
-    vaccinations_data = [
-        Vaccination(
-            title="Influenza",
-            status="",
-            date_of_completion=date(2023, 6, 21),
-            date_of_expiry=date(2024, 6, 21)
-        ),
-        Vaccination(
-            title="Covid",
-            status="",
-            date_of_completion=date(2023, 5, 22),
-            date_of_expiry=date(2024, 5, 22)
-        ),
-        Vaccination(
-            title="Tetanus",
-            status="",
-            date_of_completion=date(2023, 5, 22),
-            date_of_expiry=date(2024, 5, 22)
-        ),
-        Vaccination(
-            title="Hepatitis A",
-            status="",
-            date_of_completion=date(2023, 5, 22),
-            date_of_expiry=date(2024, 5, 22)
-        ),
-        Vaccination(
-            title="Hepatitis B",
-            status="",
-            date_of_completion=date(2023, 5, 22),
-            date_of_expiry=date(2024, 5, 22)
-        )
-    ]
-
-    # Auto fill for status In date or Out of date depending on date of expiry
-    vaccinations = []
-    for vaccination in vaccinations_data:
-        vaccination.status = "In date" if vaccination.date_of_expiry >= date.today() else "Out of date"
-        vaccinations.append(vaccination)
-
-    db.session.query(Vaccination).delete()
-    db.session.add_all(vaccinations)
     db.session.commit()
 
     print("Models seeded")
