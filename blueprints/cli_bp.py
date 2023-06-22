@@ -46,7 +46,7 @@ def seed_db():
             date_of_expiry=date(2022, 5, 22)
         )
     ]
-    
+
     # Auto fill for status In date or Out of date depending on date of expiry
     courses = []
     for course in courses_data:
@@ -60,7 +60,7 @@ def seed_db():
     licences_data = [
         Licence(
             title="Electrical",
-            number="",
+            number="PGE123456",
             description="",
             status="",
             date_of_completion=date(2023, 6, 21),
@@ -68,7 +68,7 @@ def seed_db():
         ),
         Licence(
             title="White Card",
-            number="",
+            number="A123456",
             description="",
             status="",
             date_of_completion=date(2023, 5, 22),
@@ -76,7 +76,7 @@ def seed_db():
         ),
         Licence(
             title="Yellow Card",
-            number="",
+            number="B123456",
             description="",
             status="",
             date_of_completion=date(2023, 5, 22),
@@ -97,40 +97,30 @@ def seed_db():
     vaccinations_data = [
         Vaccination(
             title="Influenza",
-            number="",
-            description="",
             status="",
             date_of_completion=date(2023, 6, 21),
             date_of_expiry=date(2024, 6, 21)
         ),
         Vaccination(
             title="Covid",
-            number="",
-            description="",
             status="",
             date_of_completion=date(2023, 5, 22),
             date_of_expiry=date(2024, 5, 22)
         ),
         Vaccination(
             title="Tetanus",
-            number="",
-            description="",
             status="",
             date_of_completion=date(2023, 5, 22),
             date_of_expiry=date(2024, 5, 22)
         ),
         Vaccination(
             title="Hepatitis A",
-            number="",
-            description="",
             status="",
             date_of_completion=date(2023, 5, 22),
             date_of_expiry=date(2024, 5, 22)
         ),
         Vaccination(
             title="Hepatitis B",
-            number="",
-            description="",
             status="",
             date_of_completion=date(2023, 5, 22),
             date_of_expiry=date(2024, 5, 22)
