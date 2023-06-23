@@ -1,5 +1,4 @@
 from init import db, ma
-from datetime import date
 
 class UserLicence(db.Model):
     __tablename__ = 'user_licences'
@@ -12,11 +11,11 @@ class UserLicence(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = db.relationship("User", back_populates="user_licences")
-    
+
     licence_id = db.Column(db.Integer, db.ForeignKey('licences.id'))
     licence = db.relationship("Licence", back_populates="user_licences")
 
-class UserCourseSchema(ma.Schema):
+class UserLicenceSchema(ma.Schema):
 
     class Meta:
         fields = ('user_id', 'licence_id', 'date_of_completion', 'date_of_expiry')

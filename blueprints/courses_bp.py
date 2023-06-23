@@ -10,7 +10,7 @@ courses_bp = Blueprint('courses', __name__, url_prefix='/courses')
 @courses_bp.route('/')
 @jwt_required()
 def all_courses():
-    # select * from cards;
+    # select * from courses;
     stmt = db.select(Course)
     courses = db.session.scalars(stmt).all()
     return CourseSchema(many=True).dump(courses)

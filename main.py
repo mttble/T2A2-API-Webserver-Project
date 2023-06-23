@@ -5,6 +5,8 @@ from blueprints.cli_bp import cli_bp
 from blueprints.auth_bp import auth_bp
 from blueprints.courses_bp import courses_bp
 from blueprints.licences_bp import licences_bp
+from blueprints.user_courses_bp import user_courses_bp
+from blueprints.user_licences_bp import user_licences_bp
 
 
 
@@ -25,5 +27,7 @@ def setup():
     app.register_blueprint(auth_bp)
     app.register_blueprint(courses_bp)
     app.register_blueprint(licences_bp)
+    app.register_blueprint(user_courses_bp)
+    app.register_blueprint(user_licences_bp)
 
     return app

@@ -10,7 +10,7 @@ licences_bp = Blueprint('licences', __name__, url_prefix='/licences')
 @licences_bp.route('/')
 @jwt_required()
 def all_licences():
-    # select * from cards;
+    # select * from licences;
     stmt = db.select(Licence)
     licences = db.session.scalars(stmt).all()
     return LicenceSchema(many=True).dump(licences)

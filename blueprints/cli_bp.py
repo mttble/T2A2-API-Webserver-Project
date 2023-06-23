@@ -30,6 +30,12 @@ def seed_db():
             email='mranderson@foo.com',
             phone_number = "0448981223",
             password=bcrypt.generate_password_hash('iknowkungfu').decode('utf-8')
+        ),
+        User(
+            name='Joe Dirt',
+            email='joedirt@foo.com',
+            phone_number = "0448981224",
+            password=bcrypt.generate_password_hash('joedirtay').decode('utf-8')
         )
     ]
     db.session.query(User).delete()

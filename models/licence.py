@@ -1,5 +1,4 @@
 from init import db, ma
-from datetime import date
 
 class Licence(db.Model):
     __tablename__ = 'licences'
