@@ -4,7 +4,7 @@ class UserCourse(db.Model):
     __tablename__ = 'user_courses'
 
     id = db.Column(db.Integer, primary_key=True)
-    date_of_completion = db.Column(db.Date)
+    date_of_completion = db.Column(db.Date,nullable=False)
     date_of_expiry = db.Column(db.Date,nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))

@@ -103,18 +103,16 @@ def seed_db():
     user_licences = [
         UserLicence(
             user = users[0],
-            licence = licences[0],
-            number = "A123456",
-            description = "",
-            date_of_completion = date(2023, 5, 22),
+            licence = licences[3],
+            licence_number = "A123456",
+            description = "Boom lift, vertical lift",
             date_of_expiry = date(2023, 6, 20)
         ),
         UserLicence(
             user = users[0],
             licence = licences[1],
-            number = "B123456",
+            licence_number = "B123456",
             description = "",
-            date_of_completion = date(2023, 5, 22),
             date_of_expiry = date(2024, 5, 22)
         )
     ]
