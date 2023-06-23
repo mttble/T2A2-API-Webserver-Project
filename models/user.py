@@ -9,7 +9,7 @@ class User(db.Model):
     name = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
-    phone_number = db.Column(db.Integer, nullable=False, unique=True)
+    phone_number = db.Column(db.String, nullable=False, unique=True)
     is_admin = db.Column(db.Boolean, default=False)
 
     user_courses = db.relationship('UserCourse', back_populates='user', cascade='all, delete')
@@ -22,4 +22,4 @@ class UserSchema(ma.Schema):
     courses = fields.List(fields.Nested('CourseSchema', exclude=['user', 'id']))
 
     class Meta:
-        fields = ('name', 'email', 'password', 'is_admin', 'licences', 'courses')
+        fields = ('name', 'email', 'phone_number', 'password', 'is_admin', 'licences', 'courses')
