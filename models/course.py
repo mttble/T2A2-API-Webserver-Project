@@ -6,7 +6,7 @@ class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100),nullable=False)
 
-    user_courses = db.relationship('UserCourse', back_populates='course')
+    user_courses = db.relationship('UserCourse', back_populates='course', cascade='all, delete')
 
 class CourseSchema(ma.Schema):
 

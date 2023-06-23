@@ -21,9 +21,10 @@ def register():
         # via the schema.
         user_info = UserSchema().load(request.json)
         user = User(
-            email=user_info['email'],
-            password=bcrypt.generate_password_hash(user_info['password']).decode('utf8'),
             name=user_info['name'],
+            email=user_info['email'],
+            phone_number=user_info['phone_number'],
+            password=bcrypt.generate_password_hash(user_info['password']).decode('utf8'),
         )
         
         # Add and commit the new user

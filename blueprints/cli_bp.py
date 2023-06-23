@@ -22,13 +22,13 @@ def seed_db():
             name = "admin",
             email = 'admin@foo.com',
             password = bcrypt.generate_password_hash('mushroompie').decode('utf-8'),
-            mobile_number = "0448981222",
+            phone_number = "0448981222",
             is_admin = True
         ),
         User(
             name='Thomas Anderson',
             email='mranderson@foo.com',
-            mobile_number = "0448981223",
+            phone_number = "0448981223",
             password=bcrypt.generate_password_hash('iknowkungfu').decode('utf-8')
         )
     ]
