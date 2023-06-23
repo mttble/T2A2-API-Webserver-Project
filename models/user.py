@@ -9,10 +9,13 @@ class User(db.Model):
     name = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
+    mobile_number = db.Column(db.Integer, nullable=False, unique=True)
     is_admin = db.Column(db.Boolean, default=False)
 
-    courses = db.relationship('Course', back_populates='user', cascade='all, delete')
-    user_courses = db.relationship('UserCourse', back_populates='user', cascade='all, delete')
+    user_courses = db.relationship('UserCourse', back_populates='user')
+    user_licences = db.relationship("UserLicence", back_populates="user")
+
+
 
 class UserSchema(ma.Schema):
 

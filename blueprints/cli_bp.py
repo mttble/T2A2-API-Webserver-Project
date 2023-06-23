@@ -5,7 +5,7 @@ from models.user import User
 from models.course import Course
 from models.user_course import UserCourse
 from models.licence import Licence
-from models.vaccination import Vaccination
+from models.user_licence import UserLicence
 
 cli_bp = Blueprint('db', __name__)
 
@@ -19,14 +19,16 @@ def create_db():
 def seed_db():
     users = [
         User(
-            name="admin",
-            email='admin@foo.com',
-            password=bcrypt.generate_password_hash('mushroompie').decode('utf-8'),
-            is_admin=True
+            name = "admin",
+            email = 'admin@foo.com',
+            password = bcrypt.generate_password_hash('mushroompie').decode('utf-8'),
+            mobile_number = "0448981222",
+            is_admin = True
         ),
         User(
             name='Thomas Anderson',
             email='mranderson@foo.com',
+            mobile_number = "0448981223",
             password=bcrypt.generate_password_hash('iknowkungfu').decode('utf-8')
         )
     ]
@@ -57,79 +59,62 @@ def seed_db():
         UserCourse(
             user = users[0],
             course = courses[0],
-            status = "",
             date_of_completion = date(2023, 5, 22),
             date_of_expiry = date(2023, 6, 20)
         ),
         UserCourse(
             user = users[0],
             course = courses[1],
-            status = "",
             date_of_completion = date(2023, 5, 22),
             date_of_expiry = date(2024, 5, 22)
         )
     ]
 
-    updated_user_courses = []
-    for course in user_courses:
-        status = "In date" if course.date_of_expiry >= date.today() else "Out of date"
-        updated_user_course = UserCourse(
-            user=course.user,
-            course=course.course,
-            status=status,
-            date_of_completion=course.date_of_completion,
-            date_of_expiry=course.date_of_expiry
-        )
-        updated_user_courses.append(updated_user_course)
-
     db.session.query(UserCourse).delete()
-    db.session.add_all(updated_user_courses)
+    db.session.add_all(user_courses)
     db.session.commit()
 
 
-    licences_data = [
+    licences = [
         Licence(
             title="Drivers",
-            number="FA123456",
-            description="",
-            status="",
-            date_of_completion=date(2023, 6, 21),
-            date_of_expiry=date(2024, 6, 21)
         ),
         Licence(
             title="Electrical",
-            number="PGE123456",
-            description="",
-            status="",
-            date_of_completion=date(2023, 6, 21),
-            date_of_expiry=date(2024, 6, 21)
         ),
         Licence(
             title="White Card",
-            number="A123456",
-            description="",
-            status="",
-            date_of_completion=date(2023, 5, 22),
-            date_of_expiry=date(2024, 5, 22)
         ),
         Licence(
             title="Yellow Card",
-            number="B123456",
-            description="",
-            status="",
-            date_of_completion=date(2023, 5, 22),
-            date_of_expiry=date(2024, 5, 22)
         )
     ]
 
-    # Auto fill for status In date or Out of date depending on date of expiry
-    licences = []
-    for licence in licences_data:
-        licence.status = "In date" if licence.date_of_expiry >= date.today() else "Out of date"
-        licences.append(licence)
-
     db.session.query(Licence).delete()
     db.session.add_all(licences)
+    db.session.commit()
+
+    user_licences = [
+        UserLicence(
+            user = users[0],
+            licence = licences[0],
+            number = "A123456",
+            description = "",
+            date_of_completion = date(2023, 5, 22),
+            date_of_expiry = date(2023, 6, 20)
+        ),
+        UserLicence(
+            user = users[0],
+            licence = licences[1],
+            number = "B123456",
+            description = "",
+            date_of_completion = date(2023, 5, 22),
+            date_of_expiry = date(2024, 5, 22)
+        )
+    ]
+
+    db.session.query(UserLicence).delete()
+    db.session.add_all(user_licences)
     db.session.commit()
 
     print("Models seeded")
