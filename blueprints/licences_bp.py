@@ -28,3 +28,16 @@ def create_licence():
     db.session.commit()
 
     return LicenceSchema().dump(licence), 201
+
+@licences_bp.route('/<int:licence_id>', methods=['DELETE'])
+@jwt_required()
+def delete_course(licence_id):
+    admin_required()
+    stmt = db.select(Licence).filter_by(id=licence_id)
+    licence = db.session.scalar(stmt)
+    if licence:
+        db.session.delete(licence)
+        db.session.commit()
+        return {}, 200
+    else:
+        return {'error':'Licence not found'}, 404

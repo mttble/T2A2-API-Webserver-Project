@@ -28,3 +28,16 @@ def create_course():
     db.session.commit()
 
     return CourseSchema().dump(course), 201
+
+@courses_bp.route('/<int:course_id>', methods=['DELETE'])
+@jwt_required()
+def delete_course(course_id):
+    admin_required()
+    stmt = db.select(Course).filter_by(id=course_id)
+    course = db.session.scalar(stmt)
+    if course:
+        db.session.delete(course)
+        db.session.commit()
+        return {}, 200
+    else:
+        return {'error':'Course not found'}, 404
