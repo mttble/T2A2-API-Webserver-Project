@@ -9,10 +9,22 @@ from blueprints.auth_bp import admin_required
 
 user_licences_bp = Blueprint('user_licences', __name__, url_prefix='/user_licences')
 
+# current user can see all their licenses
 @user_licences_bp.route('/')
 @jwt_required()
-def all_user_licences():
+def current_user_licences():
+    current_user_id = get_jwt_identity()
     # select * from licences;
+    stmt = db.select(UserLicence).where(UserLicence.user_id == current_user_id)
+    user_licences = db.session.scalars(stmt).all()
+    return UserLicenceSchema(many=True).dump(user_licences)
+
+#  admin can get all user licences
+@user_licences_bp.route('/all')
+@jwt_required()
+def all_user_licences():
+    admin_required()
+    # select * from courses;
     stmt = db.select(UserLicence)
     user_licences = db.session.scalars(stmt).all()
     return UserLicenceSchema(many=True).dump(user_licences)

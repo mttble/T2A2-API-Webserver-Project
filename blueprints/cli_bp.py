@@ -73,6 +73,18 @@ def seed_db():
             course = courses[1],
             date_of_completion = date(2023, 5, 22),
             date_of_expiry = date(2024, 5, 22)
+        ),
+        UserCourse(
+            user = users[1],
+            course = courses[2],
+            date_of_completion = date(2023, 5, 22),
+            date_of_expiry = date(2024, 5, 22)
+        ),
+        UserCourse(
+            user = users[2],
+            course = courses[2],
+            date_of_completion = date(2023, 5, 22),
+            date_of_expiry = date(2024, 5, 22)
         )
     ]
 
@@ -112,6 +124,13 @@ def seed_db():
             user = users[0],
             licence = licences[1],
             licence_number = "B123456",
+            description = "",
+            date_of_expiry = date(2024, 5, 22)
+        ),
+        UserLicence(
+            user = users[1],
+            licence = licences[1],
+            licence_number = "C123456",
             description = "",
             date_of_expiry = date(2024, 5, 22)
         )

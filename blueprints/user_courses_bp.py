@@ -9,14 +9,38 @@ from datetime import date
 
 user_courses_bp = Blueprint('user_courses', __name__, url_prefix='/user_courses')
 
+# current user can see all of their courses
 @user_courses_bp.route('/')
 @jwt_required()
+def current_user_courses():
+    current_user_id = get_jwt_identity()
+    # select * from courses;
+    stmt = db.select(UserCourse).where(UserCourse.user_id == current_user_id)
+    user_courses = db.session.scalars(stmt).all()
+    return UserCourseSchema(many=True).dump(user_courses)
+
+#  admin can get all user courses
+@user_courses_bp.route('/all')
+@jwt_required()
 def all_user_courses():
+    admin_required()
     # select * from courses;
     stmt = db.select(UserCourse)
     user_courses = db.session.scalars(stmt).all()
     return UserCourseSchema(many=True).dump(user_courses)
 
+# admin can get individual user_courses
+@user_courses_bp.route('/<int:user_id>')
+@jwt_required()
+def individual_user_courses(user_id):
+    admin_required()
+    # select * from courses;
+    stmt = db.select(UserCourse).filter_by(user_id=user_id)
+    user_courses = db.session.scalars(stmt).all()
+    if user_courses:
+        return UserCourseSchema(many=True).dump(user_courses)
+    else:
+        return {'error': 'User not found'}
 
 @user_courses_bp.route('/', methods=['POST'])
 @jwt_required()
