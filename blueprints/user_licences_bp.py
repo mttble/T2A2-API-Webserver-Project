@@ -24,11 +24,25 @@ def current_user_licences():
 @jwt_required()
 def all_user_licences():
     admin_required()
-    # select * from courses;
+    # select * from licences;
     stmt = db.select(UserLicence)
     user_licences = db.session.scalars(stmt).all()
     return UserLicenceSchema(many=True).dump(user_licences)
 
+# admin can get individual user_licences
+@user_licences_bp.route('/<int:user_id>')
+@jwt_required()
+def individual_user_licences(user_id):
+    admin_required()
+    # select * from licences;
+    stmt = db.select(UserLicence).filter_by(user_id=user_id)
+    user_licences = db.session.scalars(stmt).all()
+    if user_licences:
+        return UserLicenceSchema(many=True).dump(user_licences)
+    else:
+        return {'error': 'User not found or has no licences'}
+
+# user can create user_licences
 @user_licences_bp.route('/', methods=['POST'])
 @jwt_required()
 def create_user_licence():
@@ -49,7 +63,7 @@ def create_user_licence():
     # Create a new UserLicence instance
     user_licence = UserLicence(
         user = user,
-        licence =licence,
+        licence = licence,
         licence_number = user_licence_info['licence_number'],
         date_of_expiry = user_licence_info['date_of_expiry']
     )

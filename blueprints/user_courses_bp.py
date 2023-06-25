@@ -30,7 +30,7 @@ def all_user_courses():
     return UserCourseSchema(many=True).dump(user_courses)
 
 # admin can get individual user_courses
-@user_courses_bp.route('/<int:user_id>')
+@user_courses_bp.route('/user/<int:user_id>')
 @jwt_required()
 def individual_user_courses(user_id):
     admin_required()
@@ -40,8 +40,9 @@ def individual_user_courses(user_id):
     if user_courses:
         return UserCourseSchema(many=True).dump(user_courses)
     else:
-        return {'error': 'User not found'}
+        return {'error': 'User not found or has no courses'}
 
+# user can create user_courses
 @user_courses_bp.route('/', methods=['POST'])
 @jwt_required()
 def create_user_course():
@@ -71,3 +72,35 @@ def create_user_course():
     db.session.add(user_course)
     db.session.commit()
     return UserCourseSchema().dump(user_course), 201
+
+# allows user to update their user_course info
+@user_courses_bp.route('/course/<int:course_id>', methods=['PUT', 'PATCH'])
+@jwt_required()
+def update_user_course(course_id):
+    user_id = get_jwt_identity()
+    stmt = db.select(UserCourse).filter_by(user_id=user_id, course_id=course_id)
+    user_course = db.session.scalar(stmt)
+    user_course_info = UserCourseSchema().load(request.json)
+    if user_course:
+        user_course.date_of_completion = user_course_info.get('date_of_completion', user_course.date_of_completion)
+        user_course.date_of_expiry = user_course_info.get('date_of_expiry', user_course.date_of_expiry)
+        db.session.commit()
+        return UserCourseSchema().dump(user_course)
+    else:
+        return {'error':'Course not found'}, 404
+
+# allows admin to update users user_course info
+@user_courses_bp.route('/<int:user_id>/course/<int:course_id>', methods=['PUT', 'PATCH'])
+@jwt_required()
+def admin_update_user_course(user_id, course_id):
+    admin_required()
+    stmt = db.select(UserCourse).filter_by(user_id=user_id, course_id=course_id)
+    user_course = db.session.scalar(stmt)
+    user_course_info = UserCourseSchema().load(request.json)
+    if user_course:
+        user_course.date_of_completion = user_course_info.get('date_of_completion', user_course.date_of_completion)
+        user_course.date_of_expiry = user_course_info.get('date_of_expiry', user_course.date_of_expiry)
+        db.session.commit()
+        return UserCourseSchema().dump(user_course)
+    else:
+        return {'error': 'User or course not found'}, 404
