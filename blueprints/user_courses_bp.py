@@ -90,7 +90,7 @@ def update_user_course(course_id):
         return {'error':'Course not found'}, 404
 
 # allows admin to update users user_course info
-@user_courses_bp.route('/<int:user_id>/course/<int:course_id>', methods=['PUT', 'PATCH'])
+@user_courses_bp.route('/user/<int:user_id>/course/<int:course_id>', methods=['PUT', 'PATCH'])
 @jwt_required()
 def admin_update_user_course(user_id, course_id):
     admin_required()
