@@ -7,6 +7,10 @@ from blueprints.courses_bp import courses_bp
 from blueprints.licences_bp import licences_bp
 from blueprints.user_courses_bp import user_courses_bp
 from blueprints.user_licences_bp import user_licences_bp
+from marshmallow.exceptions import ValidationError
+from sqlalchemy.exc import DataError
+
+
 
 
 
@@ -20,9 +24,37 @@ def setup():
     ma.init_app(app)
     jwt.init_app(app)
     bcrypt.init_app(app)
-
-
-
+    
+    @app.errorhandler(400)
+    def bad_request(err):
+        return {'error': str(err)}, 400
+    
+    @app.errorhandler(ValidationError)
+    def validationerror(err):
+        return {'error': str(err)}, 400
+    
+    @app.errorhandler(KeyError)
+    def keyerror(err):
+        missing_field = err
+        error_message = f"Missing required field: {(missing_field)}"
+        return {'error': error_message}, 400
+    
+    @app.errorhandler(401)
+    def unauthorized(err):
+        return {'error': str(err)}, 401
+    
+    @app.errorhandler(404)
+    def not_found(err):
+        return {'error': str(err)}, 404
+    
+    @app.errorhandler(405)
+    def method_not_allowed(err):
+        return {'error': str(err)}, 405
+    
+    @app.errorhandler(DataError)
+    def handle_data_error(err):
+        return {'error': str(err)}, 500
+    
     app.register_blueprint(cli_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(courses_bp)

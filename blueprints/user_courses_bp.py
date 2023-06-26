@@ -5,7 +5,7 @@ from models.user import User
 from init import db
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from blueprints.auth_bp import admin_required
-from datetime import date
+from datetime import datetime
 
 user_courses_bp = Blueprint('user_courses', __name__, url_prefix='/user_courses')
 
@@ -59,6 +59,11 @@ def create_user_course():
     course = Course.query.get(user_course_info['course_id'])
     if not course:
         return {'error': 'Course not found'}, 404
+    
+    # prevent multiple entries. If course is existing they can update
+    existing_course = UserCourse.query.filter_by(user_id=user_id, course_id=user_course_info['course_id']).first()
+    if existing_course:
+        return {'error': 'User already has a course with the same user_id and course_id'}, 400
 
     # Create a new UserCourse instance
     user_course = UserCourse(
@@ -67,11 +72,10 @@ def create_user_course():
         date_of_completion=user_course_info['date_of_completion'],
         date_of_expiry=user_course_info['date_of_expiry']
     )
-
-    # Add the user_course to the session
     db.session.add(user_course)
     db.session.commit()
     return UserCourseSchema().dump(user_course), 201
+    
 
 # allows user to update their user_course info
 @user_courses_bp.route('/course/<int:course_id>', methods=['PUT', 'PATCH'])
@@ -132,3 +136,11 @@ def admin_delete_user_course(user_id, course_id):
         return {}, 200
     else:
         return {'error':'User course not found'}, 404
+    
+def validate_date(date_str):
+        try:
+            datetime.strptime(date_str, '%Y-%m-%d')
+            return True
+        except ValueError:
+            return False
+    

@@ -1,7 +1,6 @@
 from flask import Blueprint, request, abort
-from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError
-from flask_jwt_extended import  create_access_token, get_jwt_identity
+from flask_jwt_extended import  create_access_token, get_jwt_identity, jwt_required
 from datetime import timedelta
 from models.user import User, UserSchema
 from init import db, bcrypt
@@ -9,6 +8,7 @@ from init import db, bcrypt
 auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/users')
+@jwt_required()
 def all_users():
     stmt = db.select(User)
     users = db.session.scalars(stmt)
@@ -34,7 +34,7 @@ def register():
         # Return new user information
         return UserSchema(exclude=['password']).dump(user), 201
     except IntegrityError:
-        return {'error': 'Email address already in use'}, 409
+        return {'error': 'User already exists'}, 409
     
 @auth_bp.route('/login', methods=['POST'])
 def login():
@@ -42,7 +42,7 @@ def login():
         stmt = db.select(User).where(User.email==request.json['email'])
         user = db.session.scalar(stmt)
         if user and bcrypt.check_password_hash(user.password, request.json['password']):
-            token = create_access_token(identity=user.id, expires_delta=timedelta(hours=4))
+            token = create_access_token(identity=user.id, expires_delta=timedelta(hours=1))
             return {'token':token, 'user': UserSchema(exclude=['password']).dump(user)}
         else:
             return {'error': 'Invalid email address or password'}, 401

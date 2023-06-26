@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from models.course import Course, CourseSchema
 from init import db
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required
 from blueprints.auth_bp import admin_required
 from datetime import date
 
