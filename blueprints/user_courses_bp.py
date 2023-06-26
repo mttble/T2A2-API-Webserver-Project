@@ -118,3 +118,17 @@ def delete_user_course(course_id):
         return {}, 200
     else:
         return {'error':'User course not found'}, 404
+    
+# allows admin to delete a users user_course
+@user_courses_bp.route('user/<int:user_id>/course/<int:course_id>', methods=['DELETE'])
+@jwt_required()
+def admin_delete_user_course(user_id, course_id):
+    admin_required()
+    stmt = db.select(UserCourse).filter_by(user_id=user_id, course_id=course_id)
+    user_course = db.session.scalar(stmt)
+    if user_course:
+        db.session.delete(user_course)
+        db.session.commit()
+        return {}, 200
+    else:
+        return {'error':'User course not found'}, 404

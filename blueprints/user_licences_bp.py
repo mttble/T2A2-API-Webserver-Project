@@ -120,3 +120,17 @@ def delete_user_licence(licence_id):
         return {}, 200
     else:
         return {'error':'User licence not found'}, 404
+    
+# allows admin to delete a users user_licence
+@user_licences_bp.route('user/<int:user_id>/licence/<int:licence_id>', methods=['DELETE'])
+@jwt_required()
+def admin_delete_user_course(user_id, licence_id):
+    admin_required()
+    stmt = db.select(UserLicence).filter_by(user_id=user_id, licence_id=licence_id)
+    user_licence = db.session.scalar(stmt)
+    if user_licence:
+        db.session.delete(user_licence)
+        db.session.commit()
+        return {}, 200
+    else:
+        return {'error':'User licence not found'}, 404
