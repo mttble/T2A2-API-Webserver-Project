@@ -29,6 +29,7 @@ def create_course():
 
     return CourseSchema().dump(course), 201
 
+# Allows admin to delete courses
 @courses_bp.route('/<int:course_id>', methods=['DELETE'])
 @jwt_required()
 def delete_course(course_id):

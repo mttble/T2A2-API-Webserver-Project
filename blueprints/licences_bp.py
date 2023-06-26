@@ -29,6 +29,7 @@ def create_licence():
 
     return LicenceSchema().dump(licence), 201
 
+# Allows admin to delete licences
 @licences_bp.route('/<int:licence_id>', methods=['DELETE'])
 @jwt_required()
 def delete_course(licence_id):
