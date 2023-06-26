@@ -104,3 +104,17 @@ def admin_update_user_course(user_id, course_id):
         return UserCourseSchema().dump(user_course)
     else:
         return {'error': 'User or course not found'}, 404
+
+# allows user to delete user_course
+@user_courses_bp.route('/course/<int:course_id>', methods=['DELETE'])
+@jwt_required()
+def delete_user_course(course_id):
+    user_id = get_jwt_identity()
+    stmt = db.select(UserCourse).filter_by(user_id=user_id, course_id=course_id)
+    user_course = db.session.scalar(stmt)
+    if user_course:
+        db.session.delete(user_course)
+        db.session.commit()
+        return {}, 200
+    else:
+        return {'error':'User course not found'}, 404

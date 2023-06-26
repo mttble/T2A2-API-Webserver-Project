@@ -106,3 +106,17 @@ def admin_update_user_licence(user_id, licence_id):
         return UserLicenceSchema().dump(user_licence)
     else:
         return {'error': 'User or licence not found'}, 404
+    
+# allows user to delete user_licence
+@user_licences_bp.route('/licence/<int:licence_id>', methods=['DELETE'])
+@jwt_required()
+def delete_user_licence(licence_id):
+    user_id = get_jwt_identity()
+    stmt = db.select(UserLicence).filter_by(user_id=user_id, licence_id=licence_id)
+    user_licence = db.session.scalar(stmt)
+    if user_licence:
+        db.session.delete(user_licence)
+        db.session.commit()
+        return {}, 200
+    else:
+        return {'error':'User licence not found'}, 404
