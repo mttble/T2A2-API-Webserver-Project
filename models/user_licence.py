@@ -5,7 +5,7 @@ class UserLicence(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     licence_number = db.Column(db.String(50),nullable=False)
-    description = db.Column(db.Text)
+    description = db.Column(db.String(50))
     date_of_expiry = db.Column(db.Date,nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -17,4 +17,4 @@ class UserLicence(db.Model):
 class UserLicenceSchema(ma.Schema):
 
     class Meta:
-        fields = ('user_id', 'licence_id', 'licence_number', 'date_of_expiry')
+        fields = ('user_id', 'licence_id', 'licence_number', 'description', 'date_of_expiry')

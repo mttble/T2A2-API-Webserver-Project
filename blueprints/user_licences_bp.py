@@ -72,3 +72,37 @@ def create_user_licence():
     db.session.add(user_licence)
     db.session.commit()
     return UserLicenceSchema().dump(user_licence), 201
+
+# allows user to update their user_licence info
+@user_licences_bp.route('/licence/<int:licence_id>', methods=['PUT', 'PATCH'])
+@jwt_required()
+def update_user_licence(licence_id):
+    user_id = get_jwt_identity()
+    stmt = db.select(UserLicence).filter_by(user_id=user_id, licence_id=licence_id)
+    user_licence = db.session.scalar(stmt)
+    user_licence_info = UserLicenceSchema().load(request.json)
+    if user_licence:
+        user_licence.licence_number = user_licence_info.get('licence_number', user_licence.licence_number)
+        user_licence.description = user_licence_info.get('description', user_licence.description)
+        user_licence.date_of_expiry = user_licence_info.get('date_of_expiry', user_licence.date_of_expiry)
+        db.session.commit()
+        return UserLicenceSchema().dump(user_licence)
+    else:
+        return {'error':'licence not found'}, 404
+
+# allows admin to update users user_licence info
+@user_licences_bp.route('/user/<int:user_id>/licence/<int:licence_id>', methods=['PUT', 'PATCH'])
+@jwt_required()
+def admin_update_user_licence(user_id, licence_id):
+    admin_required()
+    stmt = db.select(UserLicence).filter_by(user_id=user_id, licence_id=licence_id)
+    user_licence = db.session.scalar(stmt)
+    user_licence_info = UserLicenceSchema().load(request.json)
+    if user_licence:
+        user_licence.licence_number =user_licence_info.get('licence_number', user_licence.licence_number)
+        user_licence.description = user_licence_info.get('description', user_licence.description)
+        user_licence.date_of_expiry = user_licence_info.get('date_of_expiry', user_licence.date_of_expiry)
+        db.session.commit()
+        return UserLicenceSchema().dump(user_licence)
+    else:
+        return {'error': 'User or licence not found'}, 404

@@ -133,6 +133,13 @@ def seed_db():
             licence_number = "C123456",
             description = "",
             date_of_expiry = date(2024, 5, 22)
+        ),
+        UserLicence(
+            user = users[2],
+            licence = licences[1],
+            licence_number = "D123456",
+            description = "",
+            date_of_expiry = date(2025, 5, 22)
         )
     ]
 
