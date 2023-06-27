@@ -1,5 +1,6 @@
 from init import db, ma
 from marshmallow import fields
+from marshmallow.validate import Length
 
 
 class User(db.Model):
@@ -20,6 +21,7 @@ class User(db.Model):
 class UserSchema(ma.Schema):
     licences = fields.List(fields.Nested('LicenceSchema', exclude=['user', 'id']))
     courses = fields.List(fields.Nested('CourseSchema', exclude=['user', 'id']))
+    password = fields.String(required=True, validate=Length(min=7))
 
     class Meta:
         fields = ('name', 'email', 'phone_number', 'password', 'is_admin', 'licences', 'courses')
