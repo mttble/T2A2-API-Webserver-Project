@@ -22,6 +22,7 @@ class UserSchema(ma.Schema):
     licences = fields.List(fields.Nested('LicenceSchema', exclude=['user', 'id']))
     courses = fields.List(fields.Nested('CourseSchema', exclude=['user', 'id']))
     password = fields.String(required=True, validate=Length(min=7))
+    phone_number = fields.String(required=True, validate=Length(min=10))
 
     class Meta:
         fields = ('name', 'email', 'phone_number', 'password', 'is_admin', 'licences', 'courses')
