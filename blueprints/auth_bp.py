@@ -64,10 +64,44 @@ def delete_user(user_id):
     else:
         return {'error':'User not found'}, 404
 
+# Allows user or admin to update user information
+@auth_bp.route('/users/<int:user_id>', methods=['PUT', 'PATCH'])
+@jwt_required()
+def update_user(user_id):
+    user = db.session.query(User).get(user_id)
+    if not user:
+        return {'error': 'User not found'}, 404
+
+    current_user_id = get_jwt_identity()
+
+    admin_or_user_required(current_user_id,user_id)
+
+    user_info = UserSchema().load(request.json, partial=True)
+
+    # Update user information if fields are provided
+    if 'name' in user_info:
+        user.name = user_info['name']
+    if 'email' in user_info:
+        user.email = user_info['email']
+    if 'phone_number' in user_info:
+        user.phone_number = user_info['phone_number']
+    if 'password' in user_info:
+        user.password = bcrypt.generate_password_hash(user_info['password']).decode('utf8')
     
+    # Commit the changes
+    db.session.commit()
+
+    # Return updated user information
+    return UserSchema(exclude=['password']).dump(user), 200
+
 def admin_required():
     user_id = get_jwt_identity()
     stmt = db.select(User).filter_by(id=user_id)
     user = db.session.scalar(stmt)
     if not (user and user.is_admin):
         abort(401, description="You must be an admin")
+
+def admin_or_user_required(current_user_id, user_id):
+    user = db.session.query(User).get(current_user_id)
+    if not (user and (user.is_admin or current_user_id == user_id)):
+        abort(401, description='You must be an admin or the user')

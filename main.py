@@ -8,7 +8,7 @@ from blueprints.licences_bp import licences_bp
 from blueprints.user_courses_bp import user_courses_bp
 from blueprints.user_licences_bp import user_licences_bp
 from marshmallow.exceptions import ValidationError
-from sqlalchemy.exc import DataError
+from sqlalchemy.exc import DataError, IntegrityError
 
 
 
@@ -54,6 +54,10 @@ def setup():
     @app.errorhandler(DataError)
     def handle_data_error(err):
         return {'error': str(err)}, 500
+    
+    @app.errorhandler(IntegrityError)
+    def integrityerror(err):
+        return {'error': str(err)}, 409
     
     app.register_blueprint(cli_bp)
     app.register_blueprint(auth_bp)
