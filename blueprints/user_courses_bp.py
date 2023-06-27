@@ -20,7 +20,7 @@ def current_user_courses():
     return UserCourseSchema(many=True).dump(user_courses)
 
 #  admin can get all user courses
-@user_courses_bp.route('/all')
+@user_courses_bp.route('/users/all')
 @jwt_required()
 def all_user_courses():
     admin_required()
@@ -30,7 +30,7 @@ def all_user_courses():
     return UserCourseSchema(many=True).dump(user_courses)
 
 # admin can get individual user_courses
-@user_courses_bp.route('/user/<int:user_id>')
+@user_courses_bp.route('/users/<int:user_id>')
 @jwt_required()
 def individual_user_courses(user_id):
     admin_required()
@@ -78,7 +78,7 @@ def create_user_course():
     
 
 # allows user to update their user_course info
-@user_courses_bp.route('/course/<int:course_id>', methods=['PUT', 'PATCH'])
+@user_courses_bp.route('/<int:course_id>', methods=['PUT', 'PATCH'])
 @jwt_required()
 def update_user_course(course_id):
     user_id = get_jwt_identity()

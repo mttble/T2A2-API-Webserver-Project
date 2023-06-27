@@ -21,7 +21,7 @@ def current_user_licences():
     return UserLicenceSchema(many=True).dump(user_licences)
 
 #  admin can get all user licences
-@user_licences_bp.route('/all')
+@user_licences_bp.route('users/all')
 @jwt_required()
 def all_user_licences():
     admin_required()
@@ -31,7 +31,7 @@ def all_user_licences():
     return UserLicenceSchema(many=True).dump(user_licences)
 
 # admin can get individual user_licences
-@user_licences_bp.route('/<int:user_id>')
+@user_licences_bp.route('/users/<int:user_id>')
 @jwt_required()
 def individual_user_licences(user_id):
     admin_required()
@@ -78,7 +78,7 @@ def create_user_licence():
     return UserLicenceSchema().dump(user_licence), 201
 
 # allows user to update their user_licence info
-@user_licences_bp.route('/licence/<int:licence_id>', methods=['PUT', 'PATCH'])
+@user_licences_bp.route('/<int:licence_id>', methods=['PUT', 'PATCH'])
 @jwt_required()
 def update_user_licence(licence_id):
     user_id = get_jwt_identity()

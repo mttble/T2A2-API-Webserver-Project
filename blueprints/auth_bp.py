@@ -7,6 +7,7 @@ from init import db, bcrypt
 
 auth_bp = Blueprint('auth', __name__)
 
+# allows users to get employee contact details
 @auth_bp.route('/users')
 @jwt_required()
 def all_users():
@@ -48,6 +49,21 @@ def login():
             return {'error': 'Invalid email address or password'}, 401
     except KeyError:
         return {'error': 'Email and password are required'}, 400
+
+# Allows admin to delete user and cascade delete in User model will delete all their user_courses and user_licences
+@auth_bp.route('/users/<int:user_id>', methods=['DELETE'])
+@jwt_required()
+def delete_user(user_id):
+    stmt = db.select(User).filter_by(id=user_id)
+    user = db.session.scalar(stmt)
+    if user:
+        admin_required()
+        db.session.delete(user)
+        db.session.commit()
+        return {}, 200
+    else:
+        return {'error':'User not found'}, 404
+
     
 def admin_required():
     user_id = get_jwt_identity()

@@ -1,6 +1,6 @@
 from flask import Blueprint
 from init import db, bcrypt
-from datetime import datetime
+from datetime import date
 from models.user import User
 from models.course import Course
 from models.user_course import UserCourse
@@ -65,26 +65,26 @@ def seed_db():
         UserCourse(
             user = users[0],
             course = courses[0],
-            date_of_completion = datetime(2023, 5, 22),
-            date_of_expiry = datetime(2023, 6, 20)
+            date_of_completion = date(2023, 5, 22),
+            date_of_expiry = date(2023, 6, 20)
         ),
         UserCourse(
             user = users[0],
             course = courses[1],
-            date_of_completion = datetime(2023, 5, 22),
-            date_of_expiry = datetime(2024, 5, 22)
+            date_of_completion = date(2023, 5, 22),
+            date_of_expiry = date(2024, 5, 22)
         ),
         UserCourse(
             user = users[1],
             course = courses[2],
-            date_of_completion = datetime(2023, 5, 22),
-            date_of_expiry = datetime(2024, 5, 22)
+            date_of_completion = date(2023, 5, 22),
+            date_of_expiry = date(2024, 5, 22)
         ),
         UserCourse(
             user = users[2],
             course = courses[2],
-            date_of_completion = datetime(2023, 5, 22),
-            date_of_expiry = datetime(2024, 5, 22)
+            date_of_completion = date(2023, 5, 22),
+            date_of_expiry = date(2024, 5, 22)
         )
     ]
 
@@ -118,28 +118,28 @@ def seed_db():
             licence = licences[3],
             licence_number = "A123456",
             description = "Boom lift, vertical lift",
-            date_of_expiry = datetime(2023, 6, 20)
+            date_of_expiry = date(2023, 6, 20)
         ),
         UserLicence(
             user = users[0],
             licence = licences[1],
             licence_number = "B123456",
             description = "",
-            date_of_expiry = datetime(2024, 5, 22)
+            date_of_expiry = date(2024, 5, 22)
         ),
         UserLicence(
             user = users[1],
             licence = licences[1],
             licence_number = "C123456",
             description = "",
-            date_of_expiry = datetime(2024, 5, 22)
+            date_of_expiry = date(2024, 5, 22)
         ),
         UserLicence(
             user = users[2],
             licence = licences[1],
             licence_number = "D123456",
             description = "",
-            date_of_expiry = datetime(2025, 5, 22)
+            date_of_expiry = date(2025, 5, 22)
         )
     ]
 
