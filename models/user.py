@@ -2,7 +2,7 @@ from init import db, ma
 from marshmallow import fields
 from marshmallow.validate import Length
 
-
+# SqlAlchemy creates table structure with column names and data types
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -17,6 +17,7 @@ class User(db.Model):
     user_licences = db.relationship("UserLicence", back_populates="user", cascade='all, delete')
 
 
+# Marshmallow converts these datatypes into readable format via the Schema the use of fields allows each column item to be retrieved by the blueprint
 class UserSchema(ma.Schema):
     licences = fields.List(fields.Nested('LicenceSchema', exclude=['user', 'id']))
     courses = fields.List(fields.Nested('CourseSchema', exclude=['user', 'id']))

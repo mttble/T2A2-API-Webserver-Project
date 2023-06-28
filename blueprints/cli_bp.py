@@ -7,6 +7,7 @@ from models.user_course import UserCourse
 from models.licence import Licence
 from models.user_licence import UserLicence
 
+# auth route url is defined in the blueprint which is registered in main.
 cli_bp = Blueprint('db', __name__)
 
 # create_db drops all tables and then creates all tables.

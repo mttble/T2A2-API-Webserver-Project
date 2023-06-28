@@ -5,14 +5,18 @@ from datetime import timedelta
 from models.user import User, UserSchema
 from init import db, bcrypt
 
+# auth route url is defined in the blueprint which is registered in main.
 auth_bp = Blueprint('auth', __name__)
 
 # allows users to get employee contact details
 @auth_bp.route('/users')
 @jwt_required()
 def all_users():
+    # retrieves all existing users using the select function to select class User
     stmt = db.select(User)
+    # sessions object handles the database and scalars filters result into rows.
     users = db.session.scalars(stmt)
+    # The UserSchema and dump converts results into JSON to be displayed (excluding password)
     return UserSchema(many=True, exclude=['password']).dump(users)
 
 
@@ -38,12 +42,15 @@ def register():
         return {'error': 'User already exists'}, 409
 
 
-# Allows user to login
+# Allows user to login via POST method
 @auth_bp.route('/login', methods=['POST'])
 def login():
     try:
+        # login finds an existing user in the database that matches email
         stmt = db.select(User).where(User.email==request.json['email'])
+        # session object handles database and scalar filters result by email
         user = db.session.scalar(stmt)
+        # if user email and password exist it creates a token and the user is logged in.
         if user and bcrypt.check_password_hash(user.password, request.json['password']):
             token = create_access_token(identity=user.id, expires_delta=timedelta(hours=1))
             return {'token':token, 'user': UserSchema(exclude=['password']).dump(user)}

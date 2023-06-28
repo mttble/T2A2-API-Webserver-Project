@@ -7,6 +7,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from blueprints.auth_bp import admin_required
 from datetime import datetime
 
+# auth route url is defined in the blueprint which is registered in main.
 user_courses_bp = Blueprint('user_courses', __name__, url_prefix='/user_courses')
 
 
@@ -17,7 +18,9 @@ def current_user_courses():
     current_user_id = get_jwt_identity()
     # select * from courses;
     stmt = db.select(UserCourse).where(UserCourse.user_id == current_user_id)
+    # sessions object handles the database and scalars filters result into rows.
     user_courses = db.session.scalars(stmt).all()
+    # The UserCourseSchema and dump converts results into JSON to be displayed
     return UserCourseSchema(many=True).dump(user_courses)
 
 

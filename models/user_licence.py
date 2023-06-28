@@ -1,6 +1,7 @@
 from init import db, ma
 from marshmallow import fields
 
+# SqlAlchemy creates table structure with column names and data types
 class UserLicence(db.Model):
     __tablename__ = 'user_licences'
 
@@ -15,6 +16,8 @@ class UserLicence(db.Model):
     licence_id = db.Column(db.Integer, db.ForeignKey('licences.id'))
     licence = db.relationship("Licence", back_populates="user_licences")
 
+
+# Marshmallow converts these datatypes into readable format via the Schema the use of fields allows each column item to be retrieved by the blueprint
 class UserLicenceSchema(ma.Schema):
     date_of_expiry = fields.Date(error_messages={'invalid': 'Invalid date format. Try YYYY-MM-DD'})
     class Meta:

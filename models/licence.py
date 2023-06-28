@@ -1,5 +1,6 @@
 from init import db, ma
 
+# SqlAlchemy creates table structure with column names and data types
 class Licence(db.Model):
     __tablename__ = 'licences'
 
@@ -8,6 +9,8 @@ class Licence(db.Model):
 
     user_licences = db.relationship('UserLicence', back_populates='licence', cascade='all, delete')
 
+
+# Marshmallow converts these datatypes into readable format via the Schema
 class LicenceSchema(ma.Schema):
 
     class Meta:

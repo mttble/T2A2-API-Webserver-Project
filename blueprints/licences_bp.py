@@ -5,6 +5,7 @@ from flask_jwt_extended import jwt_required
 from blueprints.auth_bp import admin_required
 from datetime import date
 
+# auth route url is defined in the blueprint which is registered in main.
 licences_bp = Blueprint('licences', __name__, url_prefix='/licences')
 
 
@@ -12,8 +13,11 @@ licences_bp = Blueprint('licences', __name__, url_prefix='/licences')
 @licences_bp.route('/')
 @jwt_required()
 def all_licences():
+    # retrieves all existing licences using the select function to select class Licence
     stmt = db.select(Licence)
+    # sessions object handles the database and scalars filters result into rows.
     licences = db.session.scalars(stmt).all()
+    # The LicenceSchema and dump converts results into JSON to be displayed
     return LicenceSchema(many=True).dump(licences)
 
 

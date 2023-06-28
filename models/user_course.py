@@ -1,6 +1,7 @@
 from init import db, ma
 from marshmallow import fields
 
+# SqlAlchemy creates table structure with column names and data types
 class UserCourse(db.Model):
     __tablename__ = 'user_courses'
 
@@ -14,6 +15,8 @@ class UserCourse(db.Model):
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
     course = db.relationship('Course', back_populates='user_courses')
 
+
+# Marshmallow converts these datatypes into readable format via the Schema the use of fields allows each column item to be retrieved by the blueprint
 class UserCourseSchema(ma.Schema):
     date_of_completion = fields.Date(error_messages={'invalid': 'Invalid date format. Try YYYY-MM-DD'})
     date_of_expiry = fields.Date(error_messages={'invalid': 'Invalid date format. Try YYYY-MM-DD'})

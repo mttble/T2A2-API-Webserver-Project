@@ -7,40 +7,47 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from blueprints.auth_bp import admin_required
 from datetime import datetime
 
+# auth route url is defined in the blueprint which is registered in main.
 user_licences_bp = Blueprint('user_licences', __name__, url_prefix='/user_licences')
 
 
-# Current user can see all of their licenses
+# Current user can see all of their user_licenses in the database
 @user_licences_bp.route('/')
 @jwt_required()
 def current_user_licences():
     current_user_id = get_jwt_identity()
-    # select * from licences;
+    # select * from licences where user_id = current_user_id
     stmt = db.select(UserLicence).where(UserLicence.user_id == current_user_id)
+    # sessions object handles the database and scalars filters result into rows.
     user_licences = db.session.scalars(stmt).all()
+    # The UserLicenceSchema and dump converts results into JSON to be displayed
     return UserLicenceSchema(many=True).dump(user_licences)
 
 
-#  Admin can get all user licences
+#  Admin can get all user_licences from the database
 @user_licences_bp.route('users/all')
 @jwt_required()
 def all_user_licences():
     admin_required()
-    # select * from licences;
+    # select * from user_licences;
     stmt = db.select(UserLicence)
+    # sessions object handles the database and scalars filters result into rows.
     user_licences = db.session.scalars(stmt).all()
+    # The UserLicenceSchema and dump converts results into JSON to be displayed
     return UserLicenceSchema(many=True).dump(user_licences)
 
 
-# Admin can get individual user_licences
+# Admin can get individual user_licences from database
 @user_licences_bp.route('/users/<int:user_id>')
 @jwt_required()
 def individual_user_licences(user_id):
     admin_required()
-    # select * from licences;
+    # select * from licences (filters by user_id);
     stmt = db.select(UserLicence).filter_by(user_id=user_id)
+    # sessions object handles database and scalars filters result in rows
     user_licences = db.session.scalars(stmt).all()
     if user_licences:
+        # dump coverts the results into JSON that is displayed
         return UserLicenceSchema(many=True).dump(user_licences)
     else:
         return {'error': 'User not found or has no licences'}
@@ -72,8 +79,11 @@ def create_user_licence():
         licence_number = user_licence_info['licence_number'],
         date_of_expiry = user_licence_info['date_of_expiry']
     )
+    # The sessions add addes all the above changes to the commit
     db.session.add(user_licence)
+    #  session commit pushes the changes to the database
     db.session.commit()
+    # 201 status is returned meaning request is satisfied and returns user_licence
     return UserLicenceSchema().dump(user_licence), 201
 
 
