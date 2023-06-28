@@ -7,13 +7,15 @@ from datetime import date
 
 licences_bp = Blueprint('licences', __name__, url_prefix='/licences')
 
+
+# allows users to get all licenses
 @licences_bp.route('/')
 @jwt_required()
 def all_licences():
-    # select * from licences;
     stmt = db.select(Licence)
     licences = db.session.scalars(stmt).all()
     return LicenceSchema(many=True).dump(licences)
+
 
 # Allows admin to add licences
 @licences_bp.route('/', methods=['POST'])
@@ -26,8 +28,8 @@ def create_licence():
     )
     db.session.add(licence)
     db.session.commit()
-
     return LicenceSchema().dump(licence), 201
+
 
 # Allows admin to delete licences
 @licences_bp.route('/<int:licence_id>', methods=['DELETE'])

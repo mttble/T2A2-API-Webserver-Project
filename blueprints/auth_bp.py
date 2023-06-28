@@ -15,11 +15,11 @@ def all_users():
     users = db.session.scalars(stmt)
     return UserSchema(many=True, exclude=['password']).dump(users)
 
+
+# Allows user to register
 @auth_bp.route('/register', methods=['POST'])
 def register():
     try:
-        # Parse, sanitise and validate the incoming JSON data
-        # via the schema.
         user_info = UserSchema().load(request.json)
         user = User(
             name=user_info['name'],
@@ -36,7 +36,9 @@ def register():
         return UserSchema(exclude=['password']).dump(user), 201
     except IntegrityError:
         return {'error': 'User already exists'}, 409
-    
+
+
+# Allows user to login
 @auth_bp.route('/login', methods=['POST'])
 def login():
     try:
@@ -49,6 +51,7 @@ def login():
             return {'error': 'Invalid email address or password'}, 401
     except KeyError:
         return {'error': 'Email and password are required'}, 400
+
 
 # Allows admin to delete user and cascade delete in User model will delete all their user_courses and user_licences
 @auth_bp.route('/users/<int:user_id>', methods=['DELETE'])
@@ -64,6 +67,7 @@ def delete_user(user_id):
     else:
         return {'error':'User not found'}, 404
 
+
 # Allows user or admin to update user information
 @auth_bp.route('/users/<int:user_id>', methods=['PUT', 'PATCH'])
 @jwt_required()
@@ -71,13 +75,9 @@ def update_user(user_id):
     user = db.session.query(User).get(user_id)
     if not user:
         return {'error': 'User not found'}, 404
-
     current_user_id = get_jwt_identity()
-
     admin_or_user_required(current_user_id,user_id)
-
     user_info = UserSchema().load(request.json, partial=True)
-
     # Update user information if fields are provided
     if 'name' in user_info:
         user.name = user_info['name']
@@ -87,12 +87,11 @@ def update_user(user_id):
         user.phone_number = user_info['phone_number']
     if 'password' in user_info:
         user.password = bcrypt.generate_password_hash(user_info['password']).decode('utf8')
-    
     # Commit the changes
     db.session.commit()
-
     # Return updated user information
     return UserSchema(exclude=['password']).dump(user), 200
+
 
 def admin_required():
     user_id = get_jwt_identity()
@@ -100,6 +99,7 @@ def admin_required():
     user = db.session.scalar(stmt)
     if not (user and user.is_admin):
         abort(401, description="You must be an admin")
+
 
 def admin_or_user_required(current_user_id, user_id):
     user = db.session.query(User).get(current_user_id)

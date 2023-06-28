@@ -11,9 +11,6 @@ from marshmallow.exceptions import ValidationError
 from sqlalchemy.exc import DataError, IntegrityError
 
 
-
-
-
 def setup():
     app = Flask(__name__)
 
@@ -56,7 +53,7 @@ def setup():
         return {'error': str(err)}, 500
     
     @app.errorhandler(IntegrityError)
-    def integrityerror(err):
+    def integrity_error(err):
         return {'error': str(err)}, 409
     
     app.register_blueprint(cli_bp)

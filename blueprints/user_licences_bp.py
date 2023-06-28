@@ -7,10 +7,10 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from blueprints.auth_bp import admin_required
 from datetime import datetime
 
-
 user_licences_bp = Blueprint('user_licences', __name__, url_prefix='/user_licences')
 
-# current user can see all their licenses
+
+# Current user can see all of their licenses
 @user_licences_bp.route('/')
 @jwt_required()
 def current_user_licences():
@@ -20,7 +20,8 @@ def current_user_licences():
     user_licences = db.session.scalars(stmt).all()
     return UserLicenceSchema(many=True).dump(user_licences)
 
-#  admin can get all user licences
+
+#  Admin can get all user licences
 @user_licences_bp.route('users/all')
 @jwt_required()
 def all_user_licences():
@@ -30,7 +31,8 @@ def all_user_licences():
     user_licences = db.session.scalars(stmt).all()
     return UserLicenceSchema(many=True).dump(user_licences)
 
-# admin can get individual user_licences
+
+# Admin can get individual user_licences
 @user_licences_bp.route('/users/<int:user_id>')
 @jwt_required()
 def individual_user_licences(user_id):
@@ -43,24 +45,21 @@ def individual_user_licences(user_id):
     else:
         return {'error': 'User not found or has no licences'}
 
-# user can create a new user_licences
+
+# Allows user to create a new user_licences
 @user_licences_bp.route('/', methods=['POST'])
 @jwt_required()
 def create_user_licence():
     user_licence_info = UserLicenceSchema().load(request.json)
-
     user_id = get_jwt_identity()
-
     # Get the user
     user = User.query.get(user_id)
     if not user:
         return {'error': 'User not found'}, 404
-
     # Get the licence
     licence = Licence.query.get(user_licence_info['licence_id'])
     if not licence:
         return {'error': 'Licence not found'}, 404
-    
     # prevent multiple entries. If licence is existing they can update
     existing_licence = UserLicence.query.filter_by(user_id=user_id, licence_id=user_licence_info['licence_id']).first()
     if existing_licence:
@@ -77,7 +76,8 @@ def create_user_licence():
     db.session.commit()
     return UserLicenceSchema().dump(user_licence), 201
 
-# allows user to update their user_licence info
+
+# Allows user to update their user_licence info
 @user_licences_bp.route('/<int:licence_id>', methods=['PUT', 'PATCH'])
 @jwt_required()
 def update_user_licence(licence_id):
@@ -91,9 +91,9 @@ def update_user_licence(licence_id):
         user_licence.date_of_expiry = user_licence_info.get('date_of_expiry', user_licence.date_of_expiry)
         db.session.commit()
         return UserLicenceSchema().dump(user_licence)
-        
 
-# allows admin to update users user_licence info
+
+# Allows admin to update users user_licence info
 @user_licences_bp.route('/user/<int:user_id>/licence/<int:licence_id>', methods=['PUT', 'PATCH'])
 @jwt_required()
 def admin_update_user_licence(user_id, licence_id):
@@ -109,9 +109,10 @@ def admin_update_user_licence(user_id, licence_id):
         return UserLicenceSchema().dump(user_licence)
     else:
         return {'error': 'User or licence not found'}, 404
-    
-# allows user to delete user_licence
-@user_licences_bp.route('/licence/<int:licence_id>', methods=['DELETE'])
+
+
+# Allows user to delete user_licence
+@user_licences_bp.route('/<int:licence_id>', methods=['DELETE'])
 @jwt_required()
 def delete_user_licence(licence_id):
     user_id = get_jwt_identity()
@@ -123,7 +124,8 @@ def delete_user_licence(licence_id):
         return {}, 200
     else:
         return {'error':'User licence not found'}, 404
-    
+
+
 # allows admin to delete a users user_licence
 @user_licences_bp.route('user/<int:user_id>/licence/<int:licence_id>', methods=['DELETE'])
 @jwt_required()
@@ -137,10 +139,3 @@ def admin_delete_user_course(user_id, licence_id):
         return {}, 200
     else:
         return {'error':'User licence not found'}, 404
-    
-def validate_date(date_str):
-        try:
-            datetime.strptime(date_str, '%Y-%m-%d')
-            return True
-        except ValueError:
-            return False

@@ -7,13 +7,15 @@ from datetime import date
 
 courses_bp = Blueprint('courses', __name__, url_prefix='/courses')
 
+
+# allows user to get all courses
 @courses_bp.route('/')
 @jwt_required()
 def all_courses():
-    # select * from courses;
     stmt = db.select(Course)
     courses = db.session.scalars(stmt).all()
     return CourseSchema(many=True).dump(courses)
+
 
 # Allows admin to add courses
 @courses_bp.route('/', methods=['POST'])
@@ -26,8 +28,8 @@ def create_course():
     )
     db.session.add(course)
     db.session.commit()
-
     return CourseSchema().dump(course), 201
+
 
 # Allows admin to delete courses
 @courses_bp.route('/<int:course_id>', methods=['DELETE'])

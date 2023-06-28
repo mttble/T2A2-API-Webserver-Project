@@ -17,7 +17,6 @@ class User(db.Model):
     user_licences = db.relationship("UserLicence", back_populates="user", cascade='all, delete')
 
 
-
 class UserSchema(ma.Schema):
     licences = fields.List(fields.Nested('LicenceSchema', exclude=['user', 'id']))
     courses = fields.List(fields.Nested('CourseSchema', exclude=['user', 'id']))

@@ -9,12 +9,15 @@ from models.user_licence import UserLicence
 
 cli_bp = Blueprint('db', __name__)
 
+# create_db drops all tables and then creates all tables.
 @cli_bp.cli.command("create")
 def create_db():
     db.drop_all()
     db.create_all()
     print("Tables created successfully")
 
+
+# seed_db is the function that adds data to the database table columns.
 @cli_bp.cli.command("seed")
 def seed_db():
     users = [
