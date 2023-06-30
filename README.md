@@ -92,7 +92,7 @@ Object Relational Mapping (ORM) is used in software development to bridge the ga
 some key functionalities of an ORM are:
 -  **Mapping Objects to Tables:** An ORM maps object-oriented models to relational database tables.
 
-- **CRUD Operations:** An ORM provides the ability to perform CRUD operations (Create, Read,Update,Delete) on the database using object-oriented syntax.
+- **CRUD Operations:** An ORM provides the ability to perform CRUD operations (Create, Read, Update, Delete) on the database using object-oriented syntax.
 
 - **Relationship Mapping:** An ORM handles the relationship mapping between objects and tables. For example one-to-one, one-to-many, many-to-many relationships.
 
@@ -107,3 +107,9 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 --------------------------
 ### **R5 - Document all endpoints for your API**
+
+### **1. /register**
+- HTTP Request Verb: POST
+- Required data: name, email, password, phone_number
+- Expected response Data: Expected '201 Created' response with return of data excluding password.
+- Authentication methods: No authentication required for new users to register as a user to the app.

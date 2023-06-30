@@ -37,7 +37,7 @@ def register():
         db.session.commit()
 
         # Return new user information
-        return UserSchema(exclude=['password']).dump(user), 201
+        return UserSchema(exclude=['password','is_admin']).dump(user), 201
     except IntegrityError:
         return {'error': 'User already exists'}, 409
 
