@@ -119,7 +119,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows user to register. This information is stored in the database.
 
-![Post /register](./images/endpoints/postregister.jpg)
+![Post /register](./docs/images/endpoints/postregister.jpg)
 
 ---------------------------------
 
@@ -134,7 +134,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows user to login if email and password provided are matching in the database. It then generates a JWT token required for authorisation to enable user to use the app.
 
-![Post /login](./images/endpoints/postlogin.jpg)
+![Post /login](./docs/images/endpoints/postlogin.jpg)
 
 --------------------------------
 
@@ -149,7 +149,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows user to get all users information (handy for looking up work contact details of employees, checking users id or checking who is admin)
 
-![Get /users](./images/endpoints/getusers.jpg)
+![Get /users](./docs/images/endpoints/getusers.jpg)
 
 ------------------------------------
 
@@ -164,7 +164,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows an admin to delete a specific user (cascade deletes their associated records too).
 
-![Delete /users/&lt;int:user_id&gt;](./images/endpoints/deleteusers.jpg)
+![Delete /users/&lt;int:user_id&gt;](./docs/images/endpoints/deleteusers.jpg)
 
 ------------------------------------
 
@@ -179,7 +179,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows a user to update their information or an admin to update any users information. This example shows user_id 5 Harry Roffman updating his phone number in the database.
 
-![Put, Patch /users/&lt;int:user_id&gt;](./images/endpoints/putpatchusers.jpg)
+![Put, Patch /users/&lt;int:user_id&gt;](./docs/images/endpoints/putpatchusers.jpg)
 
 ------------------------------------
 
@@ -194,7 +194,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows users to get all courses
 
-![Get /courses](./images/endpoints/getcourses.jpg)
+![Get /courses](./docs/images/endpoints/getcourses.jpg)
 
 ------------------------------------
 
@@ -209,7 +209,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows an admin to add a new course to the courses table.
 
-![Post /courses](./images/endpoints/postcourses.jpg)
+![Post /courses](./docs/images/endpoints/postcourses.jpg)
 
 ------------------------------------
 
@@ -224,7 +224,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows an admin to delete a course in the courses table.
 
-![Delete /courses/&lt;int:course_id&gt;](./images/endpoints/deletecourses.jpg)
+![Delete /courses/&lt;int:course_id&gt;](./docs/images/endpoints/deletecourses.jpg)
 
 ------------------------------------
 
@@ -239,7 +239,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows users to get all licences
 
-![Get /licences](./images/endpoints/getlicences.jpg)
+![Get /licences](./docs/images/endpoints/getlicences.jpg)
 
 ------------------------------------
 
@@ -254,7 +254,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows an admin to add a new licence to the licences table.
 
-![Post /licences](./images/endpoints/postlicences.jpg)
+![Post /licences](./docs/images/endpoints/postlicences.jpg)
 
 ------------------------------------
 
@@ -269,7 +269,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows an admin to delete a licence in the licences table.
 
-![Delete /licences/&lt;int:licence_id&gt;](./images/endpoints/deletelicences.jpg)
+![Delete /licences/&lt;int:licence_id&gt;](./docs/images/endpoints/deletelicences.jpg)
 
 ------------------------------------
 
@@ -284,7 +284,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows users to get all user_courses information associated with their id.
 
-![Get /user_courses](./images/endpoints/getuser_courses.jpg)
+![Get /user_courses](./docs/images/endpoints/getuser_courses.jpg)
 
 ------------------------------------
 
@@ -299,7 +299,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows admin to get all users user_courses information.
 
-![Get /user_courses/users/all](./images/endpoints/getalluser_courses.jpg)
+![Get /user_courses/users/all](./docs/images/endpoints/getalluser_courses.jpg)
 
 ------------------------------------
 
@@ -314,7 +314,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows admin to get specific users user_courses information.
 
-![Get /user_courses/users/&lt;int:user_id&gt;](./images/endpoints/getspecificuser_courses.jpg)
+![Get /user_courses/users/&lt;int:user_id&gt;](./docs/images/endpoints/getspecificuser_courses.jpg)
 
 ------------------------------------
 
@@ -329,7 +329,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows users to add user_courses
 
-![Post /user_courses](./images/endpoints/postuser_courses.jpg)
+![Post /user_courses](./docs/images/endpoints/postuser_courses.jpg)
 
 ------------------------------------
 
@@ -344,7 +344,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows users to update their user_courses information
 
-![Put, Patch /user_courses/&lt;int:course_id&gt;](./images/endpoints/putpatchuser_courses.jpg)
+![Put, Patch /user_courses/&lt;int:course_id&gt;](./docs/images/endpoints/putpatchuser_courses.jpg)
 
 ------------------------------------
 
@@ -359,7 +359,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows admin to update a users user_courses information
 
-![Put, Patch /user_courses/user/&lt;int:user_id&gt;/course/&lt;int:course_id&gt;](./images/endpoints/adminputpatchuser_courses.jpg)
+![Put, Patch /user_courses/user/&lt;int:user_id&gt;/course/&lt;int:course_id&gt;](./docs/images/endpoints/adminputpatchuser_courses.jpg)
 
 ------------------------------------
 
@@ -374,7 +374,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows user to delete user_courses
 
-![Delete /user_courses/&lt;int:course_id&gt;](./images/endpoints/deleteuser_courses.jpg)
+![Delete /user_courses/&lt;int:course_id&gt;](./docs/images/endpoints/deleteuser_courses.jpg)
 
 ------------------------------------
 
@@ -389,7 +389,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows admin to delete a users user_courses
 
-![Delete /user_courses/user/&lt;int:user_id&gt;/course/&lt;int:course_id&gt;](./images/endpoints/admindeleteuser_courses.jpg)
+![Delete /user_courses/user/&lt;int:user_id&gt;/course/&lt;int:course_id&gt;](./docs/images/endpoints/admindeleteuser_courses.jpg)
 
 ------------------------------------
 
@@ -404,7 +404,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows users to get all user_licences information associated with their id.
 
-![Get /user_licences](./images/endpoints/getuser_licences.jpg)
+![Get /user_licences](./docs/images/endpoints/getuser_licences.jpg)
 
 ------------------------------------
 
@@ -419,7 +419,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows admin to get all users user_licences information.
 
-![Get /user_licences/users/all](./images/endpoints/getalluser_licences.jpg)
+![Get /user_licences/users/all](./docs/images/endpoints/getalluser_licences.jpg)
 
 ------------------------------------
 
@@ -434,7 +434,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows admin to get specific users user_licences information.
 
-![Get /user_licences/users/&lt;int:user_id&gt;](./images/endpoints/getspecificuser_licences.jpg)
+![Get /user_licences/users/&lt;int:user_id&gt;](./docs/images/endpoints/getspecificuser_licences.jpg)
 
 ------------------------------------
 
@@ -449,7 +449,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows users to add user_licences
 
-![Post /user_licences](./images/endpoints/postuser_licences.jpg)
+![Post /user_licences](./docs/images/endpoints/postuser_licences.jpg)
 
 ------------------------------------
 
@@ -464,7 +464,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows users to update their user_licences information
 
-![Put, Patch /user_licences/&lt;int:licence_id&gt;](./images/endpoints/putpatchuser_licences.jpg)
+![Put, Patch /user_licences/&lt;int:licence_id&gt;](./docs/images/endpoints/putpatchuser_licences.jpg)
 
 ------------------------------------
 
@@ -479,7 +479,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows admin to update a users user_licences information
 
-![Put, Patch /user_licences/user/&lt;int:user_id&gt;/licence/&lt;int:licence_id&gt;](./images/endpoints/adminputpatchuser_licences.jpg)
+![Put, Patch /user_licences/user/&lt;int:user_id&gt;/licence/&lt;int:licence_id&gt;](./docs/images/endpoints/adminputpatchuser_licences.jpg)
 
 ------------------------------------
 
@@ -494,7 +494,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows user to delete user_licences
 
-![Delete /user_licences/&lt;int:licence_id&gt;](./images/endpoints/deleteuser_licences.jpg)
+![Delete /user_licences/&lt;int:licence_id&gt;](./docs/images/endpoints/deleteuser_licences.jpg)
 
 ------------------------------------
 
@@ -509,7 +509,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 - **Description:** Allows admin to delete a users user_licences
 
-![Delete /user_licences/user/&lt;int:user_id&gt;/licence/&lt;int:licence_id&gt;](./images/endpoints/admindeleteuser_licences.jpg)
+![Delete /user_licences/user/&lt;int:user_id&gt;/licence/&lt;int:licence_id&gt;](./docs/images/endpoints/admindeleteuser_licences.jpg)
 
 --------------------------------------
 
@@ -517,7 +517,7 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 
 This is the Entity Relationship Diagram that I came up with for my application after a few drafts. Entities are users, licences, courses, user_licences, and user_courses. The join tables user_licences and user_courses enable users to be associated with multiple licences and courses, and licences and courses to be associated with multiple users. I decided what columns were relevant in the tables per entity based on the problem I was trying to solve. I decided to add a description column in user_licences because some licences can have multiple endorsements which can be listed in there or any specific restrictions of the licence for example an electrical licence may have certain restrictions like an apprentices electrical licence.
 
-![ERD](./images/ERD.jpg)
+![ERD](./docs/images/ERD.jpg)
 
 --------------------------------------
 
@@ -652,18 +652,18 @@ In addition to Trello, I found the Coder Academy's Discord #standups section to 
 ## [Trello Board Link](https://trello.com/invite/b/hutKmkhk/ATTI17038b3ad9521e3b465fac7a4d393831EFE8C030/api-webserver-project)
 
 ### Daily Standups:
-![Daily standup 1](./images/dailystandup1.jpg)
-![Daily standup 2](./images/dailystandup2.jpg)
-![Daily standup 3](./images/dailystandup3.jpg)
-![Daily standup 4](./images/dailystandup4.jpg)
-![Daily standup 5](./images/dailystandup5.jpg)
-![Daily standup 6](./images/dailystandup6.jpg)
-![Daily standup 7](./images/dailystandup7.jpg)
-![Daily standup 8](./images/dailystandup8.jpg)
+![Daily standup 1](./docs/images/dailystandup1.jpg)
+![Daily standup 2](./docs/images/dailystandup2.jpg)
+![Daily standup 3](./docs/images/dailystandup3.jpg)
+![Daily standup 4](./docs/images/dailystandup4.jpg)
+![Daily standup 5](./docs/images/dailystandup5.jpg)
+![Daily standup 6](./docs/images/dailystandup6.jpg)
+![Daily standup 7](./docs/images/dailystandup7.jpg)
+![Daily standup 8](./docs/images/dailystandup8.jpg)
 
 ### Trello Board:
-![Trello Board 1](./images/trelloboard1.jpg)
+![Trello Board 1](./docs/images/trelloboard1.jpg)
 
-![Trello Board 2](./images/trelloboard2.jpg)
+![Trello Board 2](./docs/images/trelloboard2.jpg)
 
-![Trello Board 3](./images/trelloboard3.jpg)
+![Trello Board 3](./docs/images/trelloboard3.jpg)
