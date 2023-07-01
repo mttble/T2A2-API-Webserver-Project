@@ -109,7 +109,284 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 ### **R5 - Document all endpoints for your API**
 
 ### **1. /register**
-- HTTP Request Verb: POST
-- Required data: name, email, password, phone_number
-- Expected response Data: Expected '201 Created' response with return of data excluding password.
-- Authentication methods: No authentication required for new users to register as a user to the app.
+- **HTTP Request Verb:** POST
+
+- **Required data:** name, email, password, phone_number
+
+- **Expected response Data:** Expected '201 CREATED' response with return of data excluding password and is_admin.
+
+- **Authentication methods:** No authentication method required for new users to register as a user to the app. Bcrypt will hash the password and store the hashed password in the database.
+
+- **Description:** Allows user to register. This information is stored in the database.
+
+![Post /register](./images/endpoints/postregister.jpg)
+
+---------------------------------
+
+### **2. /login**
+- **HTTP Request Verb:** POST
+
+- **Required data:** email, password
+
+- **Expected response Data:** Expected '200 OK' response with return of user data and JWT token generation excluding password.
+
+- **Authentication methods:** email, password
+
+- **Description:** Allows user to login if email and password provided are matching in the database. It then generates a JWT token required for authorisation to enable user to use the app.
+
+![Post /login](./images/endpoints/postlogin.jpg)
+
+--------------------------------
+
+### **3. /users**
+- **HTTP Request Verb:** GET
+
+- **Required data:** N/A
+
+- **Expected response Data:** Expected '200 OK' response with return of all users data (excluding passwords).
+
+- **Authentication methods:** Valid JWT token
+
+- **Description:** Allows user to get all users information (handy for looking up work contact details of employees, checking users id or checking who is admin)
+
+![Get /users](./images/endpoints/getusers.jpg)
+
+------------------------------------
+
+### **4. /users/&lt;int:user_id&gt;**
+- **HTTP Request Verb:** DELETE
+
+- **Required data:** N/A
+
+- **Expected response Data:** Expected '200 OK' and return of empty JSON response.
+
+- **Authentication methods:** Valid JWT token, admin_required()
+
+- **Description:** Allows an admin to delete a specific user (cascade deletes their associated records too).
+
+![Delete /users/&lt;int:user_id&gt;](./images/endpoints/deleteusers.jpg)
+
+------------------------------------
+
+### **5. /users/&lt;int:user_id&gt;**
+- **HTTP Request Verb:** PUT, PATCH
+
+- **Required data:** name, email, password, phone_number (none or any of these values can be updated)
+
+- **Expected response Data:** Expected '200 OK' response with return of user data excluding password.
+
+- **Authentication methods:** Valid JWT token. Checks if current_user_id (using get_jwt_identity()) == user_id they are trying to update or if they are an admin.
+
+- **Description:** Allows a user to update their information or an admin to update any users information. This example shows user_id 5 Harry Roffman updating his phone number in the database.
+
+![Put, Patch /users/&lt;int:user_id&gt;](./images/endpoints/putpatchusers.jpg)
+
+------------------------------------
+
+### **6. /courses**
+- **HTTP Request Verb:** GET
+
+- **Required data:** N/A
+
+- **Expected response Data:** Expected '200 OK' response with return of all courses
+
+- **Authentication methods:** Valid JWT token
+
+- **Description:** Allows users to get all courses
+
+![Get /courses](./images/endpoints/getcourses.jpg)
+
+------------------------------------
+
+### **7. /courses**
+- **HTTP Request Verb:** POST
+
+- **Required data:** title
+
+- **Expected response Data:** Expected '201 CREATED' response with return of new course data
+
+- **Authentication methods:** Valid JWT token, admin_required()
+
+- **Description:** Allows an admin to add a new course to the courses table.
+
+![Post /courses](./images/endpoints/postcourses.jpg)
+
+------------------------------------
+
+### **8. /courses/&lt;int:course_id&gt;**
+- **HTTP Request Verb:** DELETE
+
+- **Required data:** N/A
+
+- **Expected response Data:** Expected '200 OK' and return of empty JSON response.
+
+- **Authentication methods:** Valid JWT token, admin_required()
+
+- **Description:** Allows an admin to delete a course in the courses table.
+
+![Delete /courses/&lt;int:course_id&gt;](./images/endpoints/deletecourses.jpg)
+
+------------------------------------
+
+### **9. /licences**
+- **HTTP Request Verb:** GET
+
+- **Required data:** N/A
+
+- **Expected response Data:** Expected '200 OK' response with return of all licences
+
+- **Authentication methods:** Valid JWT token
+
+- **Description:** Allows users to get all licences
+
+![Get /licences](./images/endpoints/getlicences.jpg)
+
+------------------------------------
+
+### **10. /licences**
+- **HTTP Request Verb:** POST
+
+- **Required data:** title
+
+- **Expected response Data:** Expected '201 CREATED' response with return of new licence data
+
+- **Authentication methods:** Valid JWT token, admin_required()
+
+- **Description:** Allows an admin to add a new licence to the licences table.
+
+![Post /licences](./images/endpoints/postlicences.jpg)
+
+------------------------------------
+
+### **11. /licences/&lt;int:licence_id&gt;**
+- **HTTP Request Verb:** DELETE
+
+- **Required data:** N/A
+
+- **Expected response Data:** Expected '200 OK' and return of empty JSON response.
+
+- **Authentication methods:** Valid JWT token, admin_required()
+
+- **Description:** Allows an admin to delete a licence in the licences table.
+
+![Delete /licences/&lt;int:licence_id&gt;](./images/endpoints/deletelicences.jpg)
+
+------------------------------------
+
+### **12. /user_courses**
+- **HTTP Request Verb:** GET
+
+- **Required data:** N/A
+
+- **Expected response Data:** Expected '200 OK' response with return of all users user_courses
+
+- **Authentication methods:** Valid JWT token
+
+- **Description:** Allows users to get all user_courses information associated with their id.
+
+![Get /user_courses](./images/endpoints/getuser_courses.jpg)
+
+------------------------------------
+
+### **13. /user_courses/users/all**
+- **HTTP Request Verb:** GET
+
+- **Required data:** N/A
+
+- **Expected response Data:** Expected '200 OK' response with return of all user_courses
+
+- **Authentication methods:** Valid JWT token, admin_required()
+
+- **Description:** Allows admin to get all users user_courses information.
+
+![Get /user_courses/users/all](./images/endpoints/getalluser_courses.jpg)
+
+------------------------------------
+
+### **14. /user_courses/users/&lt;int:user_id&gt;**
+- **HTTP Request Verb:** GET
+
+- **Required data:** N/A
+
+- **Expected response Data:** Expected '200 OK' response with return of specific users user_courses
+
+- **Authentication methods:** Valid JWT token, admin_required()
+
+- **Description:** Allows admin to get specific users user_courses information.
+
+![Get /user_courses/users/&lt;int:user_id&gt;](./images/endpoints/getspecificuser_courses.jpg)
+
+------------------------------------
+
+### **15. /user_courses**
+- **HTTP Request Verb:** POST
+
+- **Required data:** course_id, date_of_completion, date_of_expiry
+
+- **Expected response Data:** Expected '201 CREATED' response with return of user_courses information
+
+- **Authentication methods:** Valid JWT token
+
+- **Description:** Allows users to add user_courses
+
+![Post /user_courses](./images/endpoints/postuser_courses.jpg)
+
+------------------------------------
+
+### **16. /user_courses/&lt;int:course_id&gt;**
+- **HTTP Request Verb:** PUT, PATCH
+
+- **Required data:** date_of_completion, date_of_expiry (none or any of these values can be updated)
+
+- **Expected response Data:** Expected '200 OK' response with return of user_courses information
+
+- **Authentication methods:** Valid JWT token
+
+- **Description:** Allows users to update their user_courses information
+
+![Put, Patch /user_courses/&lt;int:course_id&gt;](./images/endpoints/putpatchuser_courses.jpg)
+
+------------------------------------
+
+### **17. /user_courses/user/&lt;int:user_id&gt;/course/&lt;int:course_id&gt;**
+- **HTTP Request Verb:** PUT, PATCH
+
+- **Required data:** date_of_completion, date_of_expiry (none or any of these values can be updated)
+
+- **Expected response Data:** Expected '200 OK' response with return of user_courses information
+
+- **Authentication methods:** Valid JWT token
+
+- **Description:** Allows admin to update a users user_courses information
+
+![Put, Patch /user_courses/user/&lt;int:user_id&gt;/course/&lt;int:course_id&gt;](./images/endpoints/adminputpatchuser_courses.jpg)
+
+------------------------------------
+
+### **18. /user_courses/&lt;int:course_id&gt;**
+- **HTTP Request Verb:** DELETE
+
+- **Required data:** N/A
+
+- **Expected response Data:** Expected '200 OK' and return of empty JSON response.
+
+- **Authentication methods:** Valid JWT token
+
+- **Description:** Allows user to delete user_courses
+
+![Delete /user_courses/&lt;int:course_id&gt;](./images/endpoints/deleteuser_courses.jpg)
+
+------------------------------------
+
+### **19. /user_courses/user/&lt;int:user_id&gt;/course/&lt;int:course_id&gt;**
+- **HTTP Request Verb:** DELETE
+
+- **Required data:** N/A
+
+- **Expected response Data:** Expected '200 OK' and return of empty JSON response.
+
+- **Authentication methods:** Valid JWT token, admin_required()
+
+- **Description:** Allows admin to delete a users user_courses
+
+![Delete /user_courses/user/&lt;int:user_id&gt;/course/&lt;int:course_id&gt;](./images/endpoints/admindeleteuser_courses.jpg)

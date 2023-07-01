@@ -19,10 +19,11 @@ class User(db.Model):
 
 # Marshmallow converts these datatypes into readable format via the Schema the use of fields allows each column item to be retrieved by the blueprint
 class UserSchema(ma.Schema):
+    id = fields.Int()
     licences = fields.List(fields.Nested('LicenceSchema', exclude=['user', 'id']))
     courses = fields.List(fields.Nested('CourseSchema', exclude=['user', 'id']))
     password = fields.String(required=True, validate=Length(min=7))
     phone_number = fields.String(required=True, validate=Length(min=10))
 
     class Meta:
-        fields = ('name', 'email', 'phone_number', 'password', 'is_admin', 'licences', 'courses')
+        fields = ('id','name', 'email', 'phone_number', 'password', 'is_admin', 'licences', 'courses')
