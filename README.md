@@ -645,13 +645,16 @@ The use of join tables allows for the flexible and efficient handling of the one
 
 In my project, tasks were allocated and tracked using Trello, a versatile project management tool. Trello provided an organised and visual way to manage my tasks throughout the project. Each day, I would start by reviewing my backlog and selecting the tasks I intended to complete for the day. These tasks would then be moved to the "To Do" column on the Trello board. As I worked on each task, I would move them to the "Doing" column to indicate my current focus. Once a task was completed, I would move it to the "Done" column and date it, ensuring that I had a clear record of when each task was finished. At the end of the day I would review and add new cards to the 'Backlog' column if there was anything else related to project development that I hadn't already thought of.
 
-Although I didn't include daily screenshots of my Trello board progress, I maintained a disciplined approach by promptly dating each completed task. This allowed me to create a chronological timeline of my progress, providing a sense of accomplishment and ensuring that I stayed on track. Reflecting on my experience, I now realise that incorporating daily screenshots would have provided a valuable visual representation of the project's evolution.
+Although I didn't include daily screenshots of my Trello board progress, I maintained a disciplined approach by promptly dating each completed task. This allowed me to create a chronological timeline of my progress, providing a sense of accomplishment and ensuring that I stayed on track. Reflecting on my experience, I now realise that incorporating daily screenshots would have provided a valuable visual representation of the project's developement.
 
 In addition to Trello, I found the Coder Academy's Discord #standups section to be immensely helpful. This platform allowed me to track my daily progress in a more concise and summarative manner. By regularly communicating and reflecting on my accomplishments in the #standups section, I was able to maintain a clear sense of progress and ensure that I remained focused on my goals throughout the project.
+
+I made regular meaningful commits to GitHub, which served as a valuable tool for tracking my progress and facilitating daily project development reviews. By committing my code frequently, I was able to maintain a detailed history of changes and milestones reached throughout the project. This allowed me to review and analyse my progress on a daily basis, providing insights into the evolution of the project. Overall, utilising GitHub for version control and progress tracking greatly contributed to the efficiency and organisation of my development process.
 
 ## [Trello Board Link](https://trello.com/invite/b/hutKmkhk/ATTI17038b3ad9521e3b465fac7a4d393831EFE8C030/api-webserver-project)
 
 ### Daily Standups:
+
 ![Daily standup 1](./docs/images/dailystandup1.jpg)
 ![Daily standup 2](./docs/images/dailystandup2.jpg)
 ![Daily standup 3](./docs/images/dailystandup3.jpg)
@@ -662,8 +665,14 @@ In addition to Trello, I found the Coder Academy's Discord #standups section to 
 ![Daily standup 8](./docs/images/dailystandup8.jpg)
 
 ### Trello Board:
+
 ![Trello Board 1](./docs/images/trelloboard1.jpg)
 
 ![Trello Board 2](./docs/images/trelloboard2.jpg)
 
 ![Trello Board 3](./docs/images/trelloboard3.jpg)
+
+### Github Commits:
+![Github commits 1](./docs/images/githubcommits1.jpg)
+
+![Github commits 2](./docs/images/githubcommits2.jpg)
