@@ -14,14 +14,17 @@ from sqlalchemy.exc import DataError, IntegrityError
 def setup():
     app = Flask(__name__)
 
+    # retrieves key and DB_URI connection string from .env for database security
     app.config['JWT_SECRET_KEY'] = environ.get('JWT_KEY')
     app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DB_URI')
 
+    # initialising these objects from init.py to be used in the app
     db.init_app(app)
     ma.init_app(app)
     jwt.init_app(app)
     bcrypt.init_app(app)
     
+    # Error handlers below help handle errors gracefully by returning JSON responses
     @app.errorhandler(400)
     def bad_request(err):
         return {'error': str(err)}, 400
@@ -56,6 +59,7 @@ def setup():
     def integrity_error(err):
         return {'error': str(err)}, 409
     
+    # Registering the blueprints to be used in the app
     app.register_blueprint(cli_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(courses_bp)

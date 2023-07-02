@@ -15,12 +15,13 @@ user_licences_bp = Blueprint('user_licences', __name__, url_prefix='/user_licenc
 @user_licences_bp.route('/')
 @jwt_required()
 def current_user_licences():
+    # Get the current user's ID from the JWT
     current_user_id = get_jwt_identity()
-    # select * from licences where user_id = current_user_id
+    # Select all user_licences where user_id matches the current user's ID
     stmt = db.select(UserLicence).where(UserLicence.user_id == current_user_id)
-    # sessions object handles the database and scalars filters result into rows.
+    # Retrieve user licences from the database and convert them into a list of scalars
     user_licences = db.session.scalars(stmt).all()
-    # The UserLicenceSchema and dump converts results into JSON to be displayed
+    # Convert the user licences into JSON format using the UserLicenceSchema
     return UserLicenceSchema(many=True).dump(user_licences)
 
 
@@ -29,11 +30,11 @@ def current_user_licences():
 @jwt_required()
 def all_user_licences():
     admin_required()
-    # select * from user_licences;
+    # Select all user_licences from the database
     stmt = db.select(UserLicence)
-    # sessions object handles the database and scalars filters result into rows.
+    # Retrieve user licences from the database and convert them into a list of scalars
     user_licences = db.session.scalars(stmt).all()
-    # The UserLicenceSchema and dump converts results into JSON to be displayed
+    # Convert the user licences into JSON format using the UserLicenceSchema
     return UserLicenceSchema(many=True).dump(user_licences)
 
 
@@ -42,9 +43,9 @@ def all_user_licences():
 @jwt_required()
 def individual_user_licences(user_id):
     admin_required()
-    # select * from licences (filters by user_id);
+    # Select all user licences from the database filtered by user_id
     stmt = db.select(UserLicence).filter_by(user_id=user_id)
-    # sessions object handles database and scalars filters result in rows
+    # Retrieve user licences from the database and convert them into a list of scalars
     user_licences = db.session.scalars(stmt).all()
     if user_licences:
         # dump coverts the results into JSON that is displayed
@@ -57,17 +58,19 @@ def individual_user_licences(user_id):
 @user_licences_bp.route('/', methods=['POST'])
 @jwt_required()
 def create_user_licence():
+    # Load user_licence information from the UserLicenceSchema
     user_licence_info = UserLicenceSchema().load(request.json)
+    # Get the user ID from the JWT token
     user_id = get_jwt_identity()
-    # Get the user
+    # Get the user from the database based on the user ID
     user = User.query.get(user_id)
     if not user:
         return {'error': 'User not found'}, 404
-    # Get the licence
+    # Get the licence from the database based on the licence ID
     licence = Licence.query.get(user_licence_info['licence_id'])
     if not licence:
         return {'error': 'Licence not found'}, 404
-    # prevent multiple entries. If licence is existing they can update
+    # Check if the user already has a licence with the same user ID and licence ID
     existing_licence = UserLicence.query.filter_by(user_id=user_id, licence_id=user_licence_info['licence_id']).first()
     if existing_licence:
         return {'error': 'User already has a licence with the same user_id and licence_id'}, 400
@@ -91,11 +94,16 @@ def create_user_licence():
 @user_licences_bp.route('/<int:licence_id>', methods=['PUT', 'PATCH'])
 @jwt_required()
 def update_user_licence(licence_id):
+    # Get the user ID from the JWT token
     user_id = get_jwt_identity()
+    # Query the UserLicence table to check if the user has the specified licence
     stmt = db.select(UserLicence).filter_by(user_id=user_id, licence_id=licence_id)
     user_licence = db.session.scalar(stmt)
+    # Load the updated user licence information from the UserLicenceSchema
     user_licence_info = UserLicenceSchema().load(request.json)
     if user_licence:
+        # Update the user_licence attributes with the new values, or keep the existing values
+        # if the corresponding fields are not present
         user_licence.licence_number = user_licence_info.get('licence_number', user_licence.licence_number)
         user_licence.description = user_licence_info.get('description', user_licence.description)
         user_licence.date_of_expiry = user_licence_info.get('date_of_expiry', user_licence.date_of_expiry)
@@ -108,10 +116,14 @@ def update_user_licence(licence_id):
 @jwt_required()
 def admin_update_user_licence(user_id, licence_id):
     admin_required()
+    # Query the UserLicence table to check if the specified user has the specified licence
     stmt = db.select(UserLicence).filter_by(user_id=user_id, licence_id=licence_id)
     user_licence = db.session.scalar(stmt)
+    # Load the updated user licence information from the UserLicenceSchema
     user_licence_info = UserLicenceSchema().load(request.json)
     if user_licence:
+        # Update the user_licence attributes with the new values, or keep the existing values
+        # if the corresponding fields are not present
         user_licence.licence_number =user_licence_info.get('licence_number', user_licence.licence_number)
         user_licence.description = user_licence_info.get('description', user_licence.description)
         user_licence.date_of_expiry = user_licence_info.get('date_of_expiry', user_licence.date_of_expiry)
@@ -125,7 +137,9 @@ def admin_update_user_licence(user_id, licence_id):
 @user_licences_bp.route('/<int:licence_id>', methods=['DELETE'])
 @jwt_required()
 def delete_user_licence(licence_id):
+    # Get the user ID from the JWT token
     user_id = get_jwt_identity()
+    # Query the UserLicence table to check if the user has the specified licence
     stmt = db.select(UserLicence).filter_by(user_id=user_id, licence_id=licence_id)
     user_licence = db.session.scalar(stmt)
     if user_licence:
@@ -141,6 +155,7 @@ def delete_user_licence(licence_id):
 @jwt_required()
 def admin_delete_user_course(user_id, licence_id):
     admin_required()
+    # Query the UserLicence table to check if the user has the specified licence
     stmt = db.select(UserLicence).filter_by(user_id=user_id, licence_id=licence_id)
     user_licence = db.session.scalar(stmt)
     if user_licence:

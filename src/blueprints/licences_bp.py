@@ -26,12 +26,17 @@ def all_licences():
 @jwt_required()
 def create_licence():
     admin_required()
+    # Load the licence information from the request JSON data using the LicenceSchema
     licence_info = LicenceSchema().load(request.json)
+    # Create a new Licence object with the loaded information
     licence = Licence(
         title = licence_info['title']
     )
+    # Add the licence to the database session
     db.session.add(licence)
+    # Commit the changes to the database
     db.session.commit()
+    # Return the created licence information as a response
     return LicenceSchema().dump(licence), 201
 
 
@@ -40,10 +45,13 @@ def create_licence():
 @jwt_required()
 def delete_course(licence_id):
     admin_required()
+    # Retrieve the licence from the database based on the provided licence_id
     stmt = db.select(Licence).filter_by(id=licence_id)
     licence = db.session.scalar(stmt)
     if licence:
+        # Delete the licence from the database session
         db.session.delete(licence)
+        # Commit the changes to the database
         db.session.commit()
         return {}, 200
     else:

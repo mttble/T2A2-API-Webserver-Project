@@ -24,6 +24,7 @@ def all_users():
 @auth_bp.route('/register', methods=['POST'])
 def register():
     try:
+        # Parse, sanitise and validate the incoming JSON data via the schema.
         user_info = UserSchema().load(request.json)
         user = User(
             name=user_info['name'],
@@ -36,7 +37,7 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        # Return new user information
+        # Return new user information (exlcuding password and is_admin)
         return UserSchema(exclude=['password','is_admin']).dump(user), 201
     except IntegrityError:
         return {'error': 'User already exists'}, 409
@@ -64,11 +65,16 @@ def login():
 @auth_bp.route('/users/<int:user_id>', methods=['DELETE'])
 @jwt_required()
 def delete_user(user_id):
+    # Select the User from the database based on the provided user_id
     stmt = db.select(User).filter_by(id=user_id)
+    # Execute the query and retrieve the User object from the database
     user = db.session.scalar(stmt)
     if user:
+        # Check if the requesting user is an admin
         admin_required()
+        # Delete the User from the database
         db.session.delete(user)
+        # Commit the changes to the database
         db.session.commit()
         return {}, 200
     else:
@@ -79,10 +85,13 @@ def delete_user(user_id):
 @auth_bp.route('/users/<int:user_id>', methods=['PUT', 'PATCH'])
 @jwt_required()
 def update_user(user_id):
+    # Retrieve the User from the database based on the provided user_id
     user = db.session.query(User).get(user_id)
     if not user:
+        # If the user does not exist, return an error response
         return {'error': 'User not found'}, 404
     current_user_id = get_jwt_identity()
+    # Check if the requesting user is an admin or the same user being updated
     admin_or_user_required(current_user_id,user_id)
     user_info = UserSchema().load(request.json, partial=True)
     # Update user information if fields are provided
@@ -94,21 +103,27 @@ def update_user(user_id):
         user.phone_number = user_info['phone_number']
     if 'password' in user_info:
         user.password = bcrypt.generate_password_hash(user_info['password']).decode('utf8')
-    # Commit the changes
+    # Commit the changes to the database
     db.session.commit()
-    # Return updated user information
+    # Return the updated user information, excluding the password field
     return UserSchema(exclude=['password']).dump(user), 200
 
 
 def admin_required():
+    # Retrieve the user ID from the JWT token
     user_id = get_jwt_identity()
+    # Construct a select statement to retrieve the user with the specified user_id
     stmt = db.select(User).filter_by(id=user_id)
+    # Execute the select statement and retrieve the user object from the database
     user = db.session.scalar(stmt)
+    # Check if the user exists and if the user is an admin
     if not (user and user.is_admin):
         abort(401, description="You must be an admin")
 
 
 def admin_or_user_required(current_user_id, user_id):
+    # Retrieve the user with the current_user_id from the database
     user = db.session.query(User).get(current_user_id)
+    # Check if the user exists and if the user is either an admin or the same user as user_id
     if not (user and (user.is_admin or current_user_id == user_id)):
         abort(401, description='You must be an admin or the user')

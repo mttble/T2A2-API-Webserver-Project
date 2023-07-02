@@ -26,12 +26,17 @@ def all_courses():
 @jwt_required()
 def create_course():
     admin_required()
+    # Parse and validate the incoming JSON data using the CourseSchema
     course_info = CourseSchema().load(request.json)
+    # Create a new Course object with the provided information
     course = Course(
         title = course_info['title']
     )
+    # Add the new course to the database session
     db.session.add(course)
+    # Commit the changes to the database
     db.session.commit()
+    # Return the serialized representation of the created course as a response
     return CourseSchema().dump(course), 201
 
 
@@ -40,10 +45,13 @@ def create_course():
 @jwt_required()
 def delete_course(course_id):
     admin_required()
+    # Select the course from the database by its ID
     stmt = db.select(Course).filter_by(id=course_id)
     course = db.session.scalar(stmt)
     if course:
+        # Delete the course from the database session
         db.session.delete(course)
+        # Commit the changes to the database
         db.session.commit()
         return {}, 200
     else:

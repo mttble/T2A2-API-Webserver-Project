@@ -29,6 +29,7 @@ def current_user_courses():
 @jwt_required()
 def all_user_courses():
     admin_required()
+    # Retrieve all user courses from the database
     stmt = db.select(UserCourse)
     user_courses = db.session.scalars(stmt).all()
     return UserCourseSchema(many=True).dump(user_courses)
@@ -39,29 +40,32 @@ def all_user_courses():
 @jwt_required()
 def individual_user_courses(user_id):
     admin_required()
+    # Retrieve user courses for the specified user from the database
     stmt = db.select(UserCourse).filter_by(user_id=user_id)
     user_courses = db.session.scalars(stmt).all()
     if user_courses:
         return UserCourseSchema(many=True).dump(user_courses)
     else:
-        return {'error': 'User not found or has no courses'}
+        return {'error': 'User not found or has no courses'}, 400
 
 
 # Allows user to create user_courses
 @user_courses_bp.route('/', methods=['POST'])
 @jwt_required()
 def create_user_course():
+    # Deserialise the incoming JSON data into a UserCourse object using UserCourseSchema
     user_course_info = UserCourseSchema().load(request.json)
+    # Get the user ID from the JWT token
     user_id = get_jwt_identity()
-    # Get the user
+    # Retrieve the user from the database based on the user ID
     user = User.query.get(user_id)
     if not user:
         return {'error': 'User not found'}, 404
-    # Get the course
+    # Retrieve the course from the database based on the course ID specified in the request
     course = Course.query.get(user_course_info['course_id'])
     if not course:
         return {'error': 'Course not found'}, 404
-    # prevent multiple entries. If course is existing they can update
+    # Check if the user already has an existing user course entry with the same user ID and course ID
     existing_course = UserCourse.query.filter_by(user_id=user_id, course_id=user_course_info['course_id']).first()
     if existing_course:
         return {'error': 'User already has a course with the same user_id and course_id'}, 400
@@ -82,14 +86,19 @@ def create_user_course():
 @user_courses_bp.route('/<int:course_id>', methods=['PUT', 'PATCH'])
 @jwt_required()
 def update_user_course(course_id):
+    # Get the user ID from the JWT token
     user_id = get_jwt_identity()
+    # Retrieve the user course from the database based on the user ID and course ID
     stmt = db.select(UserCourse).filter_by(user_id=user_id, course_id=course_id)
     user_course = db.session.scalar(stmt)
+    # Deserialise the incoming JSON data into a UserCourse object using UserCourseSchema
     user_course_info = UserCourseSchema().load(request.json)
     if user_course:
+        # Update the user course with the new information
         user_course.date_of_completion = user_course_info.get('date_of_completion', user_course.date_of_completion)
         user_course.date_of_expiry = user_course_info.get('date_of_expiry', user_course.date_of_expiry)
         db.session.commit()
+        # Return the updated user course information
         return UserCourseSchema().dump(user_course)
     else:
         return {'error':'Course not found'}, 404
@@ -100,13 +109,17 @@ def update_user_course(course_id):
 @jwt_required()
 def admin_update_user_course(user_id, course_id):
     admin_required()
+    # Retrieve the user course from the database based on the user ID and course ID
     stmt = db.select(UserCourse).filter_by(user_id=user_id, course_id=course_id)
     user_course = db.session.scalar(stmt)
+    # Deserialize the incoming JSON data into a UserCourse object using UserCourseSchema
     user_course_info = UserCourseSchema().load(request.json)
     if user_course:
+        # Update the user course with the new information
         user_course.date_of_completion = user_course_info.get('date_of_completion', user_course.date_of_completion)
         user_course.date_of_expiry = user_course_info.get('date_of_expiry', user_course.date_of_expiry)
         db.session.commit()
+        # Return the updated user course information
         return UserCourseSchema().dump(user_course)
     else:
         return {'error': 'User or course not found'}, 404
@@ -116,10 +129,13 @@ def admin_update_user_course(user_id, course_id):
 @user_courses_bp.route('/<int:course_id>', methods=['DELETE'])
 @jwt_required()
 def delete_user_course(course_id):
+    # Get the user ID from the JWT token
     user_id = get_jwt_identity()
+    # Retrieve the user course from the database based on the user ID and course ID
     stmt = db.select(UserCourse).filter_by(user_id=user_id, course_id=course_id)
     user_course = db.session.scalar(stmt)
     if user_course:
+        # Delete the user_course from the database
         db.session.delete(user_course)
         db.session.commit()
         return {}, 200
@@ -131,6 +147,7 @@ def delete_user_course(course_id):
 @jwt_required()
 def admin_delete_user_course(user_id, course_id):
     admin_required()
+    # Retrieve the user course from the database based on the user ID and course ID
     stmt = db.select(UserCourse).filter_by(user_id=user_id, course_id=course_id)
     user_course = db.session.scalar(stmt)
     if user_course:

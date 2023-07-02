@@ -512,6 +512,30 @@ Other benefits include code portablility as the ORM abstracts away the specific 
 ![Delete /user_licences/user/&lt;int:user_id&gt;/licence/&lt;int:licence_id&gt;](./docs/images/endpoints/admindeleteuser_licences.jpg)
 
 --------------------------------------
+### **Endpoint Error Handling**
+Each endpoint was manually tested and errors tried. Here are some examples of error handling in my code.
+
+![error_handling 1](./docs/images/error%20handling/errorhandling1.jpg)
+
+![error_handling 2](./docs/images/error%20handling/errorhandling2.jpg)
+
+![error_handling 3](./docs/images/error%20handling/errorhandling3.jpg)
+
+![error_handling 4](./docs/images/error%20handling/errorhandling4.jpg)
+
+![error_handling 5](./docs/images/error%20handling/errorhandling5.jpg)
+
+![error_handling 6](./docs/images/error%20handling/errorhandling6.jpg)
+
+![error_handling 7](./docs/images/error%20handling/errorhandling7.jpg)
+
+![error_handling 8](./docs/images/error%20handling/errorhandling8.jpg)
+
+![error_handling 9](./docs/images/error%20handling/errorhandling9.jpg)
+
+![error_handling 10](./docs/images/error%20handling/errorhandling10.jpg)
+
+--------------------------------------
 
 ### **R6 - An ERD for your app**
 

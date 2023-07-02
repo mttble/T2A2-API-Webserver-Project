@@ -13,7 +13,9 @@ cli_bp = Blueprint('db', __name__)
 # create_db drops all tables and then creates all tables.
 @cli_bp.cli.command("create")
 def create_db():
+    # Drop all existing database tables
     db.drop_all()
+    # Create all database tables based on defined models
     db.create_all()
     print("Tables created successfully")
 
